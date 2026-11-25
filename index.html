@@ -1,0 +1,700 @@
+<title>FemmeTrack</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600&display=swap">
+<style>
+/* Layout: moldura de celular centralizada; cabeçalho e barra inferior fixos, conteúdo rola no meio. Identidade visual do documento do projeto. */
+:root{
+  --bg:#FAFAFA; --surface:#FFFFFF; --sage:#99BCAC; --rose:#D49B91; --lilac:#A78BFA; --purple:#7C3AED;
+  --gray:#5A5A5A; --ink:#2D2D2D; --btn1:#99BCA6; --btn2:#CDCDCD; --btn-text:#192A3C; --line:#ECE7EA;
+  --rose-soft:#F7E9E6; --sage-soft:#E4EFE9; --lilac-soft:#EEE8FE; --danger:#B4443A; --desk:#EFEAF1;
+  --font:'Roboto',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--desk);color:var(--ink);font-family:var(--font);font-size:14px;line-height:1.45;font-weight:400}
+button,input,select,textarea{font:inherit;color:inherit}
+.app{position:relative;max-width:430px;height:100%;margin:0 auto;background:var(--bg);display:flex;flex-direction:column;overflow:hidden}
+@media (min-width:600px){.app{box-shadow:0 0 0 1px var(--line),0 20px 60px rgba(124,58,237,.12)}}
+.hdr{display:flex;align-items:center;gap:8px;padding:10px max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));min-height:56px;background:var(--surface);border-bottom:1px solid var(--line)}
+.hdr h1{flex:1;margin:0;font-size:20px;font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.brand{flex:1;font-size:20px;font-weight:500;background:linear-gradient(90deg,var(--rose),var(--lilac));-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.2px}
+.icon-btn{width:40px;height:40px;border:0;border-radius:8px;background:transparent;display:grid;place-items:center;cursor:pointer;color:var(--gray);flex:none}
+.icon-btn:hover{background:var(--lilac-soft);color:var(--purple)}
+svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+svg.i.fill{fill:currentColor}
+.main{flex:1;overflow-y:auto;padding:16px max(16px,env(safe-area-inset-left,0px)) 24px;padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:14px}
+.nav{display:flex;background:var(--surface);border-top:1px solid var(--line)}
+.nav button{flex:1;border:0;background:none;padding:8px 2px 9px;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--gray);font-size:12px;font-weight:300;cursor:pointer;min-width:0}
+.nav button.on{color:var(--purple);font-weight:500}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.card.tap{cursor:pointer}.card.tap:hover{border-color:var(--lilac)}
+.row{display:flex;align-items:center;gap:10px;min-width:0}
+.row.sb{justify-content:space-between}
+.grow{flex:1;min-width:0}
+.wrap{flex-wrap:wrap}
+h2{font-size:16px;font-weight:600;margin:0}
+h3{font-size:14px;font-weight:500;margin:0}
+.muted{color:var(--gray);font-size:12px;font-weight:300}
+.sub{color:var(--gray)}
+.small{font-size:12px;font-weight:300}
+.sec{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px}
+.btn{height:40px;min-width:88px;padding:12px;border:0;border-radius:8px;background:var(--btn1);color:var(--btn-text);font-size:16px;font-weight:300;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;text-align:center;line-height:1}
+.btn:hover{filter:brightness(.96)}
+.btn.sec2{background:var(--btn2)}
+.btn.block{width:100%}
+.btn.danger{background:var(--danger);color:#fff}
+.btn.sm{height:34px;font-size:14px;padding:8px 12px}
+:focus-visible{outline:2px solid var(--purple);outline-offset:2px}
+.chip{display:inline-flex;align-items:center;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:400;background:var(--lilac-soft);color:#5B21B6;white-space:nowrap}
+.chip.menstrual{background:var(--rose-soft);color:#8A4A3F}.chip.folicular{background:var(--sage-soft);color:#3E6655}.chip.ovulatoria{background:var(--lilac-soft);color:#5B21B6}.chip.lutea{background:#ECECEC;color:#444}
+.chip.ok{background:var(--sage-soft);color:#2F5A47}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+.chips button{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:5px 12px;font-size:13px;font-weight:300;cursor:pointer;white-space:nowrap}
+.chips button.on{background:var(--purple);border-color:var(--purple);color:#fff;font-weight:400}
+.search{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:0 10px;height:40px;color:var(--gray)}
+.search input{flex:1;border:0;background:none;outline:0;height:100%;min-width:0}
+.bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--sage),var(--purple));border-radius:99px}
+.bar.over>i{background:var(--rose)}
+.macros{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.macro{background:var(--bg);border-radius:8px;padding:8px;text-align:center}
+.macro b{display:block;font-weight:600;font-size:16px;font-variant-numeric:tabular-nums}
+.big{font-size:28px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1}
+.empty{text-align:center;color:var(--gray);padding:22px 10px;border:1px dashed var(--btn2);border-radius:12px;font-weight:300}
+.tag-row{display:flex;gap:6px;flex-wrap:wrap}
+.switch{position:relative;width:44px;height:26px;flex:none;border:0;border-radius:99px;background:var(--btn2);cursor:pointer;padding:0}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .15s}
+.switch.on{background:var(--purple)}.switch.on::after{left:21px}
+.heart{color:var(--rose)}
+.heart.on{color:var(--purple)}
+.days{display:flex;gap:4px}
+.days span{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:11px;background:var(--bg);color:#999}
+.days span.on{background:var(--lilac-soft);color:var(--purple);font-weight:500}
+.dots{display:flex;gap:5px}
+.dots i{width:12px;height:12px;border-radius:50%;background:var(--line)}
+.dots i.half{background:var(--lilac)}.dots i.full{background:var(--sage)}
+.check{width:26px;height:26px;border-radius:8px;border:2px solid var(--btn2);background:var(--surface);cursor:pointer;display:grid;place-items:center;flex:none;padding:0;color:#fff}
+.check.on{background:var(--sage);border-color:var(--sage)}
+.list-plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.pre{white-space:pre-line}
+/* auth */
+.auth{flex:1;overflow-y:auto;padding:16px max(20px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:14px}
+.auth img{width:200px;max-width:70%;align-self:center;mix-blend-mode:multiply}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--line);border-radius:10px;padding:3px}
+.seg button{border:0;background:none;height:36px;border-radius:8px;font-weight:300;cursor:pointer}
+.seg button.on{background:var(--surface);font-weight:500;color:var(--purple);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+/* forms */
+.form{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.f{grid-column:span 6;display:flex;flex-direction:column;gap:4px;min-width:0}
+.f.s3{grid-column:span 3}.f.s2{grid-column:span 2}.f.s4{grid-column:span 4}
+.f label{font-size:12px;color:var(--gray);font-weight:400}
+.f input,.f select,.f textarea{height:40px;padding:0 10px;border:1px solid #D9D3D7;border-radius:8px;background:#fff;min-width:0;width:100%}
+.f textarea{height:auto;min-height:84px;padding:8px 10px;resize:vertical}
+.f.cb{flex-direction:row;align-items:center;gap:8px}.f.cb input{width:20px;height:20px}
+.dayp{display:flex;gap:6px;flex-wrap:wrap}
+.dayp label{display:flex;align-items:center;gap:4px;font-size:13px;color:var(--ink)}
+.dayp input{width:18px;height:18px}
+.err{background:#FBE9E7;color:#8C2F26;border-radius:8px;padding:8px 10px;font-size:13px}
+.err:empty{display:none}
+.modal{position:absolute;inset:0;background:rgba(45,45,45,.45);display:flex;align-items:flex-end;z-index:30}
+.sheet{width:100%;max-height:92%;overflow-y:auto;background:var(--surface);border-radius:16px 16px 0 0;padding:16px max(16px,env(safe-area-inset-left,0px)) calc(18px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px}
+.toast{position:absolute;left:50%;bottom:76px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:9px 16px;border-radius:99px;font-size:13px;z-index:40;max-width:90%;text-align:center}
+.menu-item{display:flex;align-items:center;gap:12px;padding:14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;cursor:pointer;width:100%;text-align:left;border-width:1px}
+.menu-item:hover{border-color:var(--lilac)}
+.hint{background:var(--lilac-soft);color:#4C1D95;border-radius:8px;padding:8px 10px;font-size:12px}
+.pct{font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<div class="app" id="app"></div>
+<script>
+"use strict";
+const LOGO="data:image/jpeg;base64,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";
+const KEY="femmetrack_db_v1";
+const BUILD="versão 13 · receitas simplificadas";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const toISO=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const today=()=>toISO(new Date());
+const addDays=(iso,n)=>{const d=new Date(iso+"T12:00:00");d.setDate(d.getDate()+n);return toISO(d)};
+const diffDays=(a,b)=>Math.round((new Date(b+"T12:00:00")-new Date(a+"T12:00:00"))/864e5);
+const br=iso=>iso?iso.split("-").reverse().join("/"):"";
+const n1=n=>(Math.round(n*10)/10).toLocaleString("pt-BR");
+const kc=n=>Math.round(n).toLocaleString("pt-BR");
+const nowHM=()=>{const d=new Date();return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")};
+
+const MEAL={cafe_manha:"Café da manhã",lanche_manha:"Lanche da manhã",almoco:"Almoço",lanche_tarde:"Lanche da tarde",jantar:"Jantar",ceia:"Ceia"};
+const FASE={menstrual:"Menstrual",folicular:"Folicular",ovulatoria:"Ovulatória",lutea:"Lútea"};
+const OBJ={emagrecimento:"Emagrecimento",manutencao:"Manutenção",ganho_massa:"Ganho de massa",bem_estar:"Bem-estar"};
+const RCAT={cafe_manha:"Café da manhã",prato_principal:"Prato principal",lanche:"Lanche",sobremesa:"Sobremesa",bebida:"Bebida"};
+const CCAT={alimentacao:"Alimentação",saude_feminina:"Saúde feminina",ciclo_menstrual:"Ciclo menstrual",habitos:"Hábitos",bem_estar:"Bem-estar"};
+const SINT={colica:"Cólica",inchaco:"Inchaço",fadiga:"Fadiga",alteracao_humor:"Alteração de humor",dor_cabeca:"Dor de cabeça",desejo_alimentar:"Desejo alimentar",outro:"Outro"};
+const UNID={g:"g",ml:"ml",unidade:"un.",colher_sopa:"colher de sopa",xicara:"xícara"};
+const DIAS=["D","S","T","Q","Q","S","S"];
+const opts=o=>Object.entries(o);
+
+const IC={
+ menu:"M4 6h16M4 12h16M4 18h16",filter:"M3 5h18l-7 8v6l-4-2v-4z",back:"M15 5l-7 7 7 7",plus:"M12 5v14M5 12h14",
+ edit:"M4 20h4L19 9l-4-4L4 16z",trash:"M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13",
+ search:"M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4",bell:"M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 21h4",
+ heart:"M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z",
+ book:"M5 4h12a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2zM9 8h6M9 12h6",
+ chef:"M4 11h16a8 8 0 0 1-16 0zM8 7c0-2 2-2 2-4M14 7c0-2 2-2 2-4",
+ cal:"M4 6h16v14H4zM4 10h16M8 3v4M16 3v4",
+ habit:"M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM8 12l3 3 5-6",
+ more:"M5 12h.01M12 12h.01M19 12h.01",tick:"M5 12l5 5 9-10",chev:"M9 5l7 7-7 7",
+ leaf:"M5 19C5 10 10 5 19 5c0 9-5 14-14 14zM5 19l8-8",drop:"M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z",
+ user:"M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21c0-4 4-6 8-6s8 2 8 6",book2:"M4 5c3-1 6-1 8 1 2-2 5-2 8-1v14c-3-1-6-1-8 1-2-2-5-2-8-1z",
+ apple:"M12 8c-3-2-7 0-7 5 0 4 3 8 5 8 1 0 1-.5 2-.5s1 .5 2 .5c2 0 5-4 5-8 0-5-4-7-7-5zM12 8c0-2 1-3 3-4",
+ shield:"M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z",out:"M9 4H5v16h4M16 8l4 4-4 4M20 12H9"
+};
+const svg=(n,cls="")=>`<svg class="i ${cls}" viewBox="0 0 24 24" aria-hidden="true"><path d="${IC[n]}"/></svg>`;
+
+/* ===== "Banco de dados" (localStorage) com as tabelas do modelo lógico ===== */
+let db=null;
+const T=n=>db.t[n];
+const nextId=t=>(db.seq[t]=(db.seq[t]||0)+1);
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){}}
+function loadDB(){try{const r=localStorage.getItem(KEY);if(r)return JSON.parse(r)}catch(e){}return null}
+async function sha(s){
+  try{if(window.crypto&&crypto.subtle){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("ft:"+s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}}catch(e){}
+  let h=5381;for(const c of "ft:"+s)h=((h<<5)+h+c.charCodeAt(0))>>>0;return "x"+h;
+}
+const fbHash=s=>{let h=5381;for(const c of "ft:"+s)h=((h<<5)+h+c.charCodeAt(0))>>>0;return "x"+h};
+async function shaAll(s){const out=[];try{if(window.crypto&&crypto.subtle){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("ft:"+s));out.push([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join(""))}}catch(e){}
+  out.push(fbHash(s));return out}
+async function seed(){
+  db={seq:{},t:{},admin:{email:"admin@femmetrack.com",senha_hash:await sha("admin123"),senha_fb:fbHash("admin123")},session:null};
+  ["usuaria","alimento","registro_alimentar","item_registro_alimentar","receita","ingrediente_receita","receita_favorita","planejamento_refeicao","item_planejamento","habito","registro_habito","lembrete","conteudo_educativo","leitura_conteudo","ciclo_menstrual","sintoma_ciclo"].forEach(n=>db.t[n]=[]);
+  const foods=[
+   ["Arroz integral cozido","Cereais",124,2.6,25.8,1],["Feijão carioca cozido","Leguminosas",76,4.8,13.6,.5],["Peito de frango grelhado","Proteínas",159,32,0,2.5],
+   ["Ovo cozido","Proteínas",146,13.3,.6,9.5],["Banana prata","Frutas",98,1.3,26,.1],["Maçã","Frutas",63,.2,16.6,.4],["Aveia em flocos","Cereais",394,13.9,66.6,8.5],
+   ["Iogurte natural","Laticínios",51,4.1,1.9,3],["Batata-doce cozida","Tubérculos",77,.6,18.4,.1],["Brócolis cozido","Verduras",25,2.1,4.4,.5],["Salmão grelhado","Proteínas",229,24,0,14],
+   ["Abacate","Frutas",96,1.2,6,8.4],["Pão integral","Cereais",253,9.4,49.9,3.4],["Espinafre cozido","Verduras",23,3,3.8,.3],["Lentilha cozida","Leguminosas",93,6.3,16.3,.5],
+   ["Grão-de-bico cozido","Leguminosas",164,8.9,27.4,2.6],["Tomate","Verduras",15,1.1,3.1,.2],["Azeite de oliva","Gorduras",884,0,0,100],["Morango","Frutas",30,.9,6.8,.3],
+   ["Castanha-do-pará","Oleaginosas",643,14.5,15.1,63.5],["Chocolate 70% cacau","Doces",598,7.8,45.9,42.6],["Queijo cottage","Laticínios",98,11,3.4,4.3],["Mamão papaia","Frutas",40,.5,10.4,.1],["Cenoura crua","Verduras",34,1.3,7.7,.2]
+  ];
+  foods.forEach(f=>T("alimento").push({id_alimento:nextId("alimento"),nome:f[0],categoria:f[1],calorias_100g:f[2],proteinas_100g:f[3],carboidratos_100g:f[4],gorduras_100g:f[5]}));
+  const fid=n=>T("alimento").find(a=>a.nome===n).id_alimento;
+  const recs=[
+   ["Mingau de aveia com banana","Café da manhã quentinho e rápido.","Cozinhe a aveia com água ou leite por 5 minutos, mexendo. Sirva com a banana em rodelas.",10,1,"cafe_manha","folicular",[["Aveia em flocos",40],["Banana prata",100]]],
+   ["Salada de grão-de-bico com espinafre","Rica em ferro, ótima para os dias de menstruação.","Misture o grão-de-bico, o espinafre e o tomate picado. Tempere com azeite e sal.",15,2,"prato_principal","menstrual",[["Grão-de-bico cozido",150],["Espinafre cozido",60],["Tomate",80],["Azeite de oliva",10]]],
+   ["Torrada de abacate com ovo","Prática, com gorduras boas e proteína.","Torre o pão, amasse o abacate por cima e finalize com o ovo cozido fatiado.",8,1,"cafe_manha","folicular",[["Pão integral",50],["Abacate",60],["Ovo cozido",50]]],
+   ["Bowl de frango com arroz integral","Refeição completa e leve.","Grelhe o frango, cozinhe o brócolis no vapor e monte o bowl com arroz e tomate.",25,1,"prato_principal","ovulatoria",[["Peito de frango grelhado",120],["Arroz integral cozido",100],["Brócolis cozido",80],["Tomate",50]]],
+   ["Iogurte com morango e castanhas","Lanche da tarde com crocância.","Coloque o iogurte em uma tigela, adicione os morangos e as castanhas picadas.",5,1,"lanche","lutea",[["Iogurte natural",170],["Morango",80],["Castanha-do-pará",10]]],
+   ["Mousse de abacate com cacau","Sobremesa cremosa para a fase da TPM.","Bata o abacate, a banana e o chocolate derretido até ficar cremoso. Leve à geladeira por 1 hora.",15,2,"sobremesa","lutea",[["Abacate",150],["Chocolate 70% cacau",30],["Banana prata",50]]],
+   ["Sopa de lentilha com cenoura","Reconfortante e rica em ferro.","Refogue o tomate no azeite, junte a lentilha, a cenoura e água. Cozinhe por 20 minutos.",30,2,"prato_principal","menstrual",[["Lentilha cozida",200],["Cenoura crua",80],["Tomate",60],["Azeite de oliva",8]]],
+   ["Salmão com batata-doce e brócolis","Ômega-3 e carboidrato de qualidade.","Asse o salmão e a batata-doce por 20 minutos. Sirva com o brócolis cozido.",30,1,"prato_principal","ovulatoria",[["Salmão grelhado",130],["Batata-doce cozida",150],["Brócolis cozido",80]]]
+  ];
+  recs.forEach(r=>{const id=nextId("receita");let k=0;
+    r[7].forEach(i=>{T("ingrediente_receita").push({id_receita:id,id_alimento:fid(i[0]),quantidade:i[1],unidade:"g"});const a=T("alimento").find(x=>x.nome===i[0]);k+=a.calorias_100g*i[1]/100});
+    T("receita").push({id_receita:id,titulo:r[0],descricao:r[1],modo_preparo:r[2],tempo_preparo_min:r[3],porcoes:r[4],categoria:r[5],calorias_porcao:Math.round(k/r[4]),fase_ciclo_indicada:r[6]})});
+  const dis="Conteúdo de exemplo para demonstração. Não substitui orientação de profissional de saúde.";
+  [
+   ["Como a alimentação muda ao longo do ciclo","Entenda por que o apetite e a energia variam.","O ciclo menstrual tem quatro fases, e o corpo pode pedir coisas diferentes em cada uma. Na fase menstrual, alimentos ricos em ferro ajudam a repor o que se perde. Na folicular, a energia costuma subir. Na ovulatória, refeições leves e coloridas funcionam bem. Na lútea, é comum sentir mais fome e desejo por doces.\n\nObservar esses padrões no aplicativo ajuda a planejar as refeições com mais tranquilidade.","ciclo_menstrual",null],
+   ["Ferro na menstruação","Quais alimentos ajudam a repor o ferro.","Durante a menstruação há perda de ferro. Leguminosas como lentilha e grão-de-bico, folhas verde-escuras e carnes são boas fontes. Combinar esses alimentos com uma fonte de vitamina C, como frutas cítricas ou tomate, ajuda na absorção.","saude_feminina","menstrual"],
+   ["Energia na fase folicular","Aproveite a disposição do início do ciclo.","Depois da menstruação, muitas mulheres sentem mais disposição. É uma boa fase para treinos mais intensos e para refeições com boa quantidade de proteína e carboidratos integrais.","ciclo_menstrual","folicular"],
+   ["Refeições leves na ovulação","Dicas simples para os dias de ovulação.","Na ovulação, saladas, peixes, frutas e grãos integrais costumam cair bem. Hidratação também é importante nessa fase.","alimentacao","ovulatoria"],
+   ["TPM e desejos por doces","O que fazer quando bate vontade de chocolate.","Na fase lútea o desejo por doces é comum. Chocolate com alto teor de cacau, frutas e oleaginosas podem ajudar a satisfazer a vontade com mais nutrientes. Dormir bem e manter refeições regulares também reduz a vontade exagerada.","ciclo_menstrual","lutea"],
+   ["Quanto de água beber por dia","Um hábito simples com grande efeito.","Uma meta comum é cerca de 2 litros por dia, mas a necessidade varia com clima, atividade e peso. Deixe uma garrafa por perto e use um lembrete para criar o hábito.","habitos",null],
+   ["Sono e bem-estar","Dormir bem melhora o humor e o apetite.","Manter horários regulares, reduzir telas antes de deitar e evitar cafeína à noite ajudam a ter um sono melhor.","bem_estar",null]
+  ].forEach((c,i)=>T("conteudo_educativo").push({id_conteudo:nextId("conteudo_educativo"),titulo:c[0],resumo:c[1],corpo:c[2],categoria:c[3],fase_ciclo:c[4],fonte:dis,data_publicacao:addDays(today(),-20+i*3),publicado:true}));
+  // usuária de demonstração
+  const t=today();
+  const uid=nextId("usuaria");
+  T("usuaria").push({id_usuaria:uid,nome:"Ana Demo",email:"demo@femmetrack.com",senha_hash:await sha("123456"),senha_fb:fbHash("123456"),data_nascimento:"1998-05-14",peso_kg:62,altura_cm:165,objetivo:"bem_estar",meta_calorica_kcal:1800,data_cadastro:new Date().toISOString()});
+  const reg=(tipo,h,itens)=>{const id=nextId("registro_alimentar");T("registro_alimentar").push({id_registro:id,id_usuaria:uid,data_refeicao:t,horario:h,tipo_refeicao:tipo,observacao:""});itens.forEach(i=>T("item_registro_alimentar").push({id_registro:id,id_alimento:fid(i[0]),quantidade_g:i[1]}))};
+  reg("cafe_manha","07:45",[["Aveia em flocos",40],["Banana prata",100],["Iogurte natural",120]]);
+  reg("almoco","12:30",[["Peito de frango grelhado",120],["Arroz integral cozido",100],["Brócolis cozido",80]]);
+  const h1=nextId("habito"),h2=nextId("habito");
+  T("habito").push({id_habito:h1,id_usuaria:uid,nome:"Beber água",descricao:"Meta diária de hidratação",meta_diaria:2,unidade_meta:"litros",ativo:true,data_criacao:addDays(t,-10)});
+  T("habito").push({id_habito:h2,id_usuaria:uid,nome:"Caminhada",descricao:"Caminhar ao ar livre",meta_diaria:30,unidade_meta:"minutos",ativo:true,data_criacao:addDays(t,-10)});
+  [[-3,2,1],[-2,1.5,0],[-1,2,1],[0,1,0]].forEach(r=>T("registro_habito").push({id_registro_habito:nextId("registro_habito"),id_habito:h1,data_registro:addDays(t,r[0]),valor_realizado:r[1],concluido:!!r[2]}));
+  [[-2,30,1],[-1,15,0]].forEach(r=>T("registro_habito").push({id_registro_habito:nextId("registro_habito"),id_habito:h2,data_registro:addDays(t,r[0]),valor_realizado:r[1],concluido:!!r[2]}));
+  T("lembrete").push({id_lembrete:nextId("lembrete"),id_usuaria:uid,id_habito:h1,titulo:"Hora de beber água",mensagem:"Mantenha a garrafinha por perto.",horario:"10:00",dias_semana:"0111110",ativo:true});
+  const pid=nextId("planejamento_refeicao");
+  T("planejamento_refeicao").push({id_planejamento:pid,id_usuaria:uid,nome:"Semana atual",data_inicio:t,data_fim:addDays(t,6)});
+  [[1,0,"almoco"],[4,1,"almoco"],[7,2,"jantar"]].forEach(p=>T("item_planejamento").push({id_item:nextId("item_planejamento"),id_planejamento:pid,id_receita:p[0],data_prevista:addDays(t,p[1]),tipo_refeicao:p[2],realizada:false}));
+  const cid=nextId("ciclo_menstrual");
+  T("ciclo_menstrual").push({id_ciclo:cid,id_usuaria:uid,data_inicio:addDays(t,-31),data_fim_menstruacao:addDays(t,-27),duracao_ciclo_dias:28});
+  const cid2=nextId("ciclo_menstrual");
+  T("ciclo_menstrual").push({id_ciclo:cid2,id_usuaria:uid,data_inicio:addDays(t,-3),data_fim_menstruacao:null,duracao_ciclo_dias:null});
+  T("ciclo_menstrual")[0].duracao_ciclo_dias=28;
+  T("sintoma_ciclo").push({id_sintoma:nextId("sintoma_ciclo"),id_ciclo:cid2,data_registro:addDays(t,-2),tipo:"colica",intensidade:3,observacao:"Passou com chá quente."});
+  T("leitura_conteudo").push({id_usuaria:uid,id_conteudo:2,data_ultima_leitura:new Date().toISOString(),salvo:true});
+  persist();
+}
+
+/* ===== Estado de tela ===== */
+let nav=[{name:"diario",p:{}}];
+let ui={date:today(),q:"",fase:"",cat:"",favOnly:false,savedOnly:false,authTab:"login",modal:null,toast:null};
+const me=()=>db.session&&!db.session.admin?T("usuaria").find(u=>u.id_usuaria===db.session.id):null;
+const isAdmin=()=>!!(db.session&&db.session.admin);
+const cur=()=>nav[nav.length-1];
+function go(name,p={},root=false){if(root)nav=[];nav.push({name,p});ui.q="";ui.cat="";ui.fase="";ui.favOnly=false;ui.savedOnly=false;ui.mine=false;render();$(".main")?.scrollTo(0,0)}
+function back(){if(nav.length>1){nav.pop();render()}}
+function toast(msg){ui.toast=msg;render();clearTimeout(toast.t);toast.t=setTimeout(()=>{ui.toast=null;const t=$(".toast");if(t)t.remove()},2200)}
+
+/* ===== Cálculos ===== */
+const food=id=>T("alimento").find(a=>a.id_alimento==id);
+const itemsOf=rid=>T("item_registro_alimentar").filter(i=>i.id_registro==rid);
+function nut(items){return items.reduce((s,i)=>{const a=food(i.id_alimento);if(!a)return s;const f=i.quantidade_g/100;s.k+=a.calorias_100g*f;s.p+=a.proteinas_100g*f;s.c+=a.carboidratos_100g*f;s.g+=a.gorduras_100g*f;return s},{k:0,p:0,c:0,g:0})}
+function recalcCycles(uid){const cs=T("ciclo_menstrual").filter(c=>c.id_usuaria==uid).sort((a,b)=>a.data_inicio.localeCompare(b.data_inicio));
+  cs.forEach((c,i)=>{const nx=cs[i+1];if(nx){const d=diffDays(c.data_inicio,nx.data_inicio);c.duracao_ciclo_dias=d>=15&&d<=60?d:null}else c.duracao_ciclo_dias=null})}
+function cyclesOf(u){return T("ciclo_menstrual").filter(c=>c.id_usuaria==u.id_usuaria).sort((a,b)=>b.data_inicio.localeCompare(a.data_inicio))}
+function phase(u){const c=cyclesOf(u)[0];if(!c)return null;const day=diffDays(c.data_inicio,today())+1;if(day>60)return{day,fase:null};
+  return{day,fase:day<=5?"menstrual":day<=13?"folicular":day<=16?"ovulatoria":"lutea"}}
+const chip=(f)=>f?`<span class="chip ${f}">${FASE[f]}</span>`:"";
+function recCalc(recId){const r=T("receita").find(x=>x.id_receita==recId);let k=0;T("ingrediente_receita").filter(i=>i.id_receita==recId).forEach(i=>{if(i.unidade==="g"||i.unidade==="ml"){const a=food(i.id_alimento);if(a)k+=a.calorias_100g*i.quantidade/100}});return k?Math.round(k/r.porcoes):r.calorias_porcao}
+
+/* ===== Formulários em modal ===== */
+function fieldHTML(f,v){
+  const val=v[f.n]??f.def??"";const id="f_"+f.n;const span=f.s?" s"+f.s:"";
+  if(f.t==="checkbox")return `<div class="f cb${span}"><input type="checkbox" id="${id}" name="${f.n}" ${v[f.n]?"checked":""}><label for="${id}">${esc(f.l)}</label></div>`;
+  if(f.t==="days"){const s=String(v[f.n]||"0111110");return `<div class="f"><label>${esc(f.l)}</label><div class="dayp">${["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"].map((d,i)=>`<label><input type="checkbox" name="d${i}" ${s[i]==="1"?"checked":""}>${d}</label>`).join("")}</div></div>`}
+  let ctl="";
+  if(f.t==="select")ctl=`<select id="${id}" name="${f.n}" ${f.req?"required":""}>${f.blank?`<option value="">${esc(f.blank)}</option>`:""}${f.opts.map(o=>`<option value="${esc(o[0])}" ${String(o[0])===String(val)?"selected":""}>${esc(o[1])}</option>`).join("")}</select>`;
+  else if(f.t==="textarea")ctl=`<textarea id="${id}" name="${f.n}" ${f.req?"required":""} placeholder="${esc(f.ph||"")}">${esc(val)}</textarea>`;
+  else ctl=`<input id="${id}" name="${f.n}" type="${f.t||"text"}" value="${esc(val)}" ${f.req?"required":""} ${(f.min??(f.t==="date"?"2000-01-01":null))!=null?`min="${f.min??"2000-01-01"}"`:""} ${(f.max??(f.t==="date"?"2100-12-31":null))!=null?`max="${f.max??"2100-12-31"}"`:""} ${f.step?`step="${f.step}"`:""} placeholder="${esc(f.ph||"")}" ${f.t==="password"?'autocomplete="new-password"':""}>`;
+  return `<div class="f${span}"><label for="${id}">${esc(f.l)}${f.req?" *":""}</label>${ctl}</div>`;
+}
+function openForm({title,fields,values={},submit="Salvar",onSubmit,note}){ui.modal={kind:"form",title,fields,values,submit,onSubmit,note};renderModal()}
+function confirmBox(msg,onYes,label="Excluir"){ui.modal={kind:"confirm",msg,onYes,label};renderModal()}
+function closeModal(){ui.modal=null;renderModal()}
+function renderModal(){
+  let el=$("#modal");const m=ui.modal;
+  if(!m){if(el)el.remove();return}
+  if(!el){el=document.createElement("div");el.id="modal";el.className="modal";$("#app").appendChild(el)}
+  if(m.kind==="confirm"){el.innerHTML=`<div class="sheet" role="dialog" aria-modal="true"><h2>Confirmar</h2><p style="margin:0">${esc(m.msg)}</p><div class="row"><button class="btn sec2 grow" data-act="closeModal">Cancelar</button><button class="btn danger grow" data-act="confirmYes">${esc(m.label)}</button></div></div>`;return}
+  el.innerHTML=`<form class="sheet" id="mform" role="dialog" aria-modal="true" novalidate><div class="row sb"><h2>${esc(m.title)}</h2><button type="button" class="icon-btn" data-act="closeModal" aria-label="Fechar"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>${m.note?`<div class="hint">${esc(m.note)}</div>`:""}<div class="form">${m.fields.map(f=>fieldHTML(f,m.values)).join("")}</div><div class="err" id="ferr" role="alert"></div><div class="row"><button type="button" class="btn sec2 grow" data-act="closeModal">Cancelar</button><button type="submit" class="btn grow">${esc(m.submit)}</button></div></form>`;
+  el.querySelector("input:not([type=checkbox]),select,textarea")?.focus();
+}
+async function handleForm(form){
+  if(form.id==="mform"){const m=ui.modal;const fd=new FormData(form);const vals={};
+    for(const f of m.fields){
+      if(f.t==="checkbox")vals[f.n]=fd.has(f.n);
+      else if(f.t==="days"){vals[f.n]=[0,1,2,3,4,5,6].map(i=>fd.has("d"+i)?"1":"0").join("")}
+      else{let v=(fd.get(f.n)??"").toString().trim();if(f.t==="number")v=v===""?null:parseFloat(v.replace(",","."));vals[f.n]=v;
+        const inp=form.querySelector("#f_"+f.n);
+        if(f.t==="date"&&inp&&inp.validity.badInput){$("#ferr").textContent=`A data de "${f.l}" é inválida ou está incompleta. Confira se o dia existe no mês (novembro, por exemplo, tem só 30 dias).`;return}
+        if(f.t==="date"&&v&&(v<"2000-01-01"||v>"2100-12-31")){$("#ferr").textContent=`Confira o ano da data de "${f.l}".`;return}
+        if(f.req&&(v===""||v===null||Number.isNaN(v))){$("#ferr").textContent=`Preencha o campo "${f.l}".`;return}}
+    }
+    const err=await m.onSubmit(vals);
+    if(err){const x=$("#ferr");if(x)x.textContent=err}else{ui.modal=null;renderModal();persist();render()}
+  }
+  if(form.dataset.form==="login"){doLogin(new FormData(form))}
+  if(form.dataset.form==="signup"){doSignup(new FormData(form))}
+}
+document.addEventListener("submit",e=>{e.preventDefault();handleForm(e.target)});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&ui.modal)closeModal()});
+
+/* ===== Autenticação ===== */
+async function doLogin(fd){
+  const email=(fd.get("email")||"").toString().trim().toLowerCase(),hs=await shaAll((fd.get("senha")||"").toString());
+  const err=$("#autherr");
+  if(email===db.admin.email&&(hs.includes(db.admin.senha_hash)||hs.includes(db.admin.senha_fb))){db.session={admin:true};persist();nav=[{name:"a_alimentos",p:{}}];render();return}
+  const u=T("usuaria").find(x=>x.email.toLowerCase()===email&&(hs.includes(x.senha_hash)||hs.includes(x.senha_fb)));
+  if(!u){const hasAcc=T("usuaria").some(x=>x.email.toLowerCase()===email);err.textContent=email==="demo@femmetrack.com"&&!hasAcc?'A conta demo não existe mais neste navegador. Toque em "Restaurar dados de demonstração" para recriá-la.':"E-mail ou senha incorretos.";return}
+  db.session={id:u.id_usuaria};persist();nav=[{name:"diario",p:{}}];ui.date=today();render();
+}
+async function doSignup(fd){
+  const err=$("#autherr");const nome=(fd.get("nome")||"").toString().trim(),email=(fd.get("email")||"").toString().trim().toLowerCase(),senha=(fd.get("senha")||"").toString(),nasc=(fd.get("nasc")||"").toString();
+  if(nome.length<2){err.textContent="Informe seu nome.";return}
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){err.textContent="Informe um e-mail válido.";return}
+  if(T("usuaria").some(u=>u.email.toLowerCase()===email)||email===db.admin.email){err.textContent="Este e-mail já está cadastrado.";return}
+  if(senha.length<6){err.textContent="A senha precisa ter pelo menos 6 caracteres.";return}
+  if(!nasc){err.textContent="Informe sua data de nascimento.";return}
+  if(nasc>today()){err.textContent="A data de nascimento não pode ser futura.";return}
+  const id=nextId("usuaria");
+  T("usuaria").push({id_usuaria:id,nome,email,senha_hash:await sha(senha),senha_fb:fbHash(senha),data_nascimento:nasc,peso_kg:null,altura_cm:null,objetivo:null,meta_calorica_kcal:null,data_cadastro:new Date().toISOString()});
+  db.session={id};persist();nav=[{name:"perfil",p:{}}];render();toast("Conta criada! Complete seu perfil e metas.");
+}
+function authView(){
+  const login=ui.authTab==="login";
+  return `<div class="auth"><img src="${LOGO}" alt="FemmeTrack">
+  <div class="seg" role="tablist"><button class="${login?"on":""}" data-act="authTab" data-id="login">Entrar</button><button class="${!login?"on":""}" data-act="authTab" data-id="signup">Cadastrar</button></div>
+  ${login?`<form data-form="login" class="form" novalidate>
+    <div class="f"><label for="l_email">E-mail</label><input id="l_email" name="email" type="email" autocomplete="username" required></div>
+    <div class="f"><label for="l_senha">Senha</label><input id="l_senha" name="senha" type="password" autocomplete="current-password" required></div>
+    <div class="f"><div class="err" id="autherr" role="alert"></div></div>
+    <div class="f"><button class="btn block" type="submit">Entrar</button></div></form>
+    <div class="hint"><b>Para a apresentação:</b> usuária demo <b>demo@femmetrack.com</b> / <b>123456</b>. Administradora: <b>admin@femmetrack.com</b> / <b>admin123</b>.</div>
+    <div class="row"><button class="btn sec2 grow sm" data-act="fillDemo" data-id="u">Preencher demo</button><button class="btn sec2 grow sm" data-act="fillDemo" data-id="a">Preencher admin</button></div>
+    <button class="btn sec2 block sm" data-act="resetDemo">Restaurar dados de demonstração</button><div class="muted" style="text-align:center">${BUILD}</div>`
+  :`<form data-form="signup" class="form" novalidate>
+    <div class="f"><label for="s_nome">Nome</label><input id="s_nome" name="nome" autocomplete="name" required></div>
+    <div class="f"><label for="s_email">E-mail</label><input id="s_email" name="email" type="email" autocomplete="username" required></div>
+    <div class="f"><label for="s_senha">Senha (mín. 6 caracteres)</label><input id="s_senha" name="senha" type="password" autocomplete="new-password" required></div>
+    <div class="f"><label for="s_nasc">Data de nascimento</label><input id="s_nasc" name="nasc" type="date" max="${today()}" required></div>
+    <div class="f"><div class="err" id="autherr" role="alert"></div></div>
+    <div class="f"><button class="btn block" type="submit">Criar conta</button></div></form>`}
+  </div>`;
+}
+
+/* ===== Telas da usuária ===== */
+function vDiario(){
+  const u=me(),d=ui.date,meta=u.meta_calorica_kcal;
+  const regs=T("registro_alimentar").filter(r=>r.id_usuaria==u.id_usuaria&&r.data_refeicao==d).sort((a,b)=>(a.horario||"99").localeCompare(b.horario||"99"));
+  const n=nut(regs.flatMap(r=>itemsOf(r.id_registro)));const pct=meta?Math.min(100,n.k/meta*100):0;
+  return `<div class="row"><button class="icon-btn" data-act="day" data-id="-1" aria-label="Dia anterior">${svg("back")}</button>
+    <div class="grow"><input type="date" id="f_date" data-on="date" value="${d}" style="width:100%;height:40px;border:1px solid var(--line);border-radius:8px;padding:0 10px;background:#fff"></div>
+    <button class="icon-btn" data-act="day" data-id="1" aria-label="Próximo dia"><svg class="i" viewBox="0 0 24 24"><path d="${IC.chev}"/></svg></button></div>
+  <div class="card"><div class="row sb"><div><div class="muted">${d===today()?"Hoje":br(d)} · calorias</div><div class="big pct">${kc(n.k)} <span class="muted">${meta?`/ ${kc(meta)} kcal`:"kcal"}</span></div></div></div>
+    ${meta?`<div class="bar ${n.k>meta?"over":""}"><i style="width:${pct}%"></i></div><div class="muted">${n.k>meta?`Passou ${kc(n.k-meta)} kcal da meta`:`Faltam ${kc(meta-n.k)} kcal para a meta`}</div>`:`<div class="hint">Defina sua meta diária no perfil para acompanhar o progresso.</div>`}
+    <div class="macros"><div class="macro"><b>${n1(n.p)} g</b><span class="muted">Proteínas</span></div><div class="macro"><b>${n1(n.c)} g</b><span class="muted">Carboidratos</span></div><div class="macro"><b>${n1(n.g)} g</b><span class="muted">Gorduras</span></div></div></div>
+  <div class="sec"><h2>Refeições do dia</h2></div>
+  ${Object.keys(MEAL).map(tipo=>{const r=regs.find(x=>x.tipo_refeicao===tipo);const it=r?itemsOf(r.id_registro):[];const k=nut(it).k;
+    return `<div class="card tap" data-act="slot" data-tipo="${tipo}"><div class="row sb"><h3>${MEAL[tipo]}</h3><span class="muted">${r?.horario||""}</span></div>${it.length?`<div class="row sb"><span class="sub">${it.length} ${it.length===1?"alimento":"alimentos"}</span><b class="pct">${kc(k)} kcal</b></div>`:`<div class="row sb"><span class="muted">Nenhum alimento ainda</span><span style="color:var(--purple)">${svg("plus")}</span></div>`}${r?.observacao?`<div class="muted">${esc(r.observacao)}</div>`:""}</div>`}).join("")}`;
+}
+function findReg(uid,tipo,date){return T("registro_alimentar").find(x=>x.id_usuaria==uid&&x.data_refeicao==date&&x.tipo_refeicao==tipo)}
+function ensureReg(uid,tipo,date){let r=findReg(uid,tipo,date);if(!r){r={id_registro:nextId("registro_alimentar"),id_usuaria:uid,data_refeicao:date,horario:null,tipo_refeicao:tipo,observacao:""};T("registro_alimentar").push(r)}return r}
+function vRefeicao(p){
+  const u=me();const r=p.id?T("registro_alimentar").find(x=>x.id_registro==p.id):findReg(u.id_usuaria,p.tipo,p.date);
+  const tipo=r?r.tipo_refeicao:p.tipo,date=r?r.data_refeicao:p.date;if(!tipo)return `<div class="empty">Refeição não encontrada.</div>`;
+  const it=r?itemsOf(r.id_registro):[];const n=nut(it);const at=`data-id="${r?r.id_registro:""}" data-tipo="${tipo}" data-date="${date}"`;
+  return `<div class="card"><div class="row sb"><div class="grow"><h2>${MEAL[tipo]}</h2><div class="muted">${br(date)}${r?.horario?" às "+r.horario:""}</div></div>
+    ${r?`<button class="icon-btn" data-act="editMeal" data-id="${r.id_registro}" aria-label="Editar horário e observações">${svg("edit")}</button><button class="icon-btn" data-act="delMeal" data-id="${r.id_registro}" aria-label="Limpar refeição">${svg("trash")}</button>`:""}</div>
+    ${r?.observacao?`<div class="sub">${esc(r.observacao)}</div>`:""}
+    <div class="macros"><div class="macro"><b>${kc(n.k)}</b><span class="muted">kcal</span></div><div class="macro"><b>${n1(n.p)} g</b><span class="muted">Prot.</span></div><div class="macro"><b>${n1(n.c)} g</b><span class="muted">Carb.</span></div></div>
+    <div class="muted">Gorduras: ${n1(n.g)} g</div></div>
+  <div class="sec"><h2>Alimentos</h2><div class="row"><button class="btn sm" data-act="addItem" ${at}>${svg("plus")} Alimento</button><button class="btn sm" data-act="addRecipeMeal" ${at}>${svg("plus")} Receita</button></div></div>
+  ${it.length?it.map(i=>{const a=food(i.id_alimento);const k=nut([i]).k;return `<div class="card"><div class="row sb"><div class="grow"><h3>${esc(a.nome)}</h3><div class="muted">${n1(i.quantidade_g)} g · ${kc(k)} kcal</div></div><button class="icon-btn" data-act="editItem" data-id="${r.id_registro}" data-aid="${i.id_alimento}" aria-label="Editar quantidade">${svg("edit")}</button><button class="icon-btn" data-act="delItem" data-id="${r.id_registro}" data-aid="${i.id_alimento}" aria-label="Remover alimento">${svg("trash")}</button></div></div>`}).join(""):`<div class="empty">Adicione alimentos ou uma receita pronta a esta refeição.</div>`}`;
+}
+function foodsResults(){
+  const q=ui.q.toLowerCase(),c=ui.cat;
+  const l=T("alimento").filter(a=>(!c||a.categoria===c)&&(!q||a.nome.toLowerCase().includes(q))).sort((a,b)=>a.nome.localeCompare(b.nome));
+  return l.length?l.map(a=>`<div class="card"><div class="row sb"><h3>${esc(a.nome)}</h3><span class="chip">${esc(a.categoria)}</span></div><div class="macros"><div class="macro"><b>${kc(a.calorias_100g)}</b><span class="muted">kcal</span></div><div class="macro"><b>${n1(a.proteinas_100g)}</b><span class="muted">Prot. g</span></div><div class="macro"><b>${n1(a.carboidratos_100g)}</b><span class="muted">Carb. g</span></div></div><div class="muted">Gorduras ${n1(a.gorduras_100g)} g · valores por 100 g</div></div>`).join(""):`<div class="empty">Nenhum alimento encontrado.</div>`;
+}
+const cats=()=>[...new Set(T("alimento").map(a=>a.categoria))].sort();
+function vAlimentos(){return `<div class="search">${svg("search")}<input id="q" data-on="q" placeholder="Buscar alimento" value="${esc(ui.q)}" aria-label="Buscar alimento"></div>
+  <div class="chips"><button class="${!ui.cat?"on":""}" data-act="cat" data-id="">Todas</button>${cats().map(c=>`<button class="${ui.cat===c?"on":""}" data-act="cat" data-id="${esc(c)}">${esc(c)}</button>`).join("")}</div>
+  <div id="results" style="display:flex;flex-direction:column;gap:10px">${foodsResults()}</div>`}
+function recChips(r){const own=!!r.id_usuaria||!(r.porcoes>1);return (r.tempo_preparo_min?`<span class="chip">${r.tempo_preparo_min} min</span>`:"")+(own?"":`<span class="chip">${r.porcoes} ${r.porcoes>1?"porções":"porção"}</span>`)+(r.calorias_porcao?`<span class="chip">${kc(r.calorias_porcao)} ${own?"kcal":"kcal/porção"}</span>`:"")}
+const vis=r=>!r.id_usuaria||(!!me()&&r.id_usuaria===me().id_usuaria);
+const favIds=u=>T("receita_favorita").filter(f=>f.id_usuaria==u.id_usuaria).map(f=>f.id_receita);
+function recipesResults(){
+  const u=me(),q=ui.q.toLowerCase(),fav=favIds(u);
+  const l=T("receita").filter(r=>vis(r)&&(!ui.mine||r.id_usuaria)&&(!ui.fase||r.fase_ciclo_indicada===ui.fase)&&(!ui.favOnly||fav.includes(r.id_receita))&&(!q||r.titulo.toLowerCase().includes(q)||(r.descricao||"").toLowerCase().includes(q)));
+  return l.length?l.map(r=>`<div class="card tap" data-act="go" data-to="receita" data-id="${r.id_receita}"><div class="row sb"><h3 class="grow">${esc(r.titulo)}</h3><span class="heart ${fav.includes(r.id_receita)?"on":""}">${svg("heart",fav.includes(r.id_receita)?"fill":"")}</span></div><div class="muted">${esc(r.descricao||"")}</div><div class="tag-row">${recChips(r)}${chip(r.fase_ciclo_indicada)}${r.id_usuaria?`<span class="chip">Minha receita</span>`:""}</div></div>`).join(""):`<div class="empty">Nenhuma receita encontrada.</div>`;
+}
+function vReceitas(){return `<div class="row"><div class="search grow">${svg("search")}<input id="q" data-on="q" placeholder="Buscar receita" value="${esc(ui.q)}" aria-label="Buscar receita"></div><button class="btn sm" data-act="recNew">${svg("plus")} Nova</button></div>
+  <div class="chips"><button class="${ui.mine?"on":""}" data-act="mine">Minhas receitas</button><button class="${ui.favOnly?"on":""}" data-act="favOnly">Favoritas</button><button class="${!ui.fase?"on":""}" data-act="fase" data-id="">Todas as fases</button>${opts(FASE).map(([k,v])=>`<button class="${ui.fase===k?"on":""}" data-act="fase" data-id="${k}">${v}</button>`).join("")}</div>
+  <div id="results" style="display:flex;flex-direction:column;gap:10px">${recipesResults()}</div>`}
+function vReceita(id){
+  const r=T("receita").find(x=>x.id_receita==id);if(!r)return `<div class="empty">Receita não encontrada.</div>`;
+  if(!vis(r))return `<div class="empty">Receita não encontrada.</div>`;const u=me(),isFav=favIds(u).includes(r.id_receita);const ing=T("ingrediente_receita").filter(i=>i.id_receita==id);
+  return `<div class="card"><div class="row sb"><h2 class="grow">${esc(r.titulo)}</h2>${r.id_usuaria?`<button class="icon-btn" data-act="recEdit" data-id="${id}" aria-label="Editar receita">${svg("edit")}</button><button class="icon-btn" data-act="recDel" data-id="${id}" aria-label="Excluir receita">${svg("trash")}</button>`:""}<button class="icon-btn heart ${isFav?"on":""}" data-act="fav" data-id="${id}" aria-label="${isFav?"Remover dos favoritos":"Favoritar"}" aria-pressed="${isFav}">${svg("heart",isFav?"fill":"")}</button></div>
+    <div class="sub">${esc(r.descricao||"")}</div>
+    <div class="tag-row">${recChips(r)}${r.categoria?`<span class="chip">${RCAT[r.categoria]}</span>`:""}${chip(r.fase_ciclo_indicada)}</div></div>
+  <div class="card"><h2>Ingredientes</h2><ul class="list-plain">${ing.map(i=>`<li>${n1(i.quantidade)} ${UNID[i.unidade]||i.unidade} de ${esc(food(i.id_alimento)?.nome||"?")}</li>`).join("")}</ul></div>
+  ${r.modo_preparo?`<div class="card"><h2>Modo de preparo</h2><div class="pre">${esc(r.modo_preparo)}</div></div>`:""}
+  <button class="btn block" data-act="recDiary" data-id="${id}">${svg("plus")} Adicionar ao diário</button>
+  <button class="btn sec2 block" data-act="planAdd" data-id="${id}">${svg("plus")} Adicionar ao planejamento</button>`;
+}
+function vPlanos(){
+  const u=me();const ps=T("planejamento_refeicao").filter(p=>p.id_usuaria==u.id_usuaria).sort((a,b)=>b.data_inicio.localeCompare(a.data_inicio));
+  return `<div class="sec"><h2>Meus planejamentos</h2><button class="btn sm" data-act="newPlan">${svg("plus")} Novo</button></div>
+  ${ps.length?ps.map(p=>{const it=T("item_planejamento").filter(i=>i.id_planejamento==p.id_planejamento);const ok=it.filter(i=>i.realizada).length;return `<div class="card tap" data-act="go" data-to="plano" data-id="${p.id_planejamento}"><h3>${esc(p.nome)}</h3><div class="muted">${br(p.data_inicio)} a ${br(p.data_fim)}</div><div class="bar"><i style="width:${it.length?ok/it.length*100:0}%"></i></div><div class="muted">${ok} de ${it.length} refeições realizadas</div></div>`}).join(""):`<div class="empty">Você ainda não criou nenhum planejamento.<br>Crie um e inclua receitas por dia e tipo de refeição.</div>`}`;
+}
+function vPlano(id){
+  const p=T("planejamento_refeicao").find(x=>x.id_planejamento==id);if(!p)return `<div class="empty">Planejamento não encontrado.</div>`;
+  const it=T("item_planejamento").filter(i=>i.id_planejamento==id).sort((a,b)=>a.data_prevista.localeCompare(b.data_prevista));
+  const ok=it.filter(i=>i.realizada).length;
+  return `<div class="card"><div class="row sb"><div class="grow"><h2>${esc(p.nome)}</h2><div class="muted">${br(p.data_inicio)} a ${br(p.data_fim)}</div></div><button class="icon-btn" data-act="delPlan" data-id="${id}" aria-label="Excluir planejamento">${svg("trash")}</button></div>
+    <div class="bar"><i style="width:${it.length?ok/it.length*100:0}%"></i></div><div class="muted">${ok} de ${it.length} realizadas</div><div class="hint">Ao marcar uma refeição como realizada, a receita (1 porção) é somada à refeição correspondente do diário, no dia previsto.</div></div>
+  <div class="sec"><h2>Refeições planejadas</h2><button class="btn sm" data-act="addPlanItem" data-id="${id}">${svg("plus")} Incluir</button></div>
+  ${it.length?it.map(i=>{const r=T("receita").find(x=>x.id_receita==i.id_receita);return `<div class="card"><div class="row"><button class="check ${i.realizada?"on":""}" data-act="togPlan" data-id="${i.id_item}" aria-label="${i.realizada?"Marcar como não realizada":"Marcar como realizada"}" aria-pressed="${i.realizada}">${i.realizada?svg("tick"):""}</button><div class="grow"><h3 style="${i.realizada?"text-decoration:line-through;color:var(--gray)":""}">${esc(r?.titulo||"Receita removida")}</h3><div class="muted">${br(i.data_prevista)} · ${MEAL[i.tipo_refeicao]}</div>${i.realizada&&i.id_registro_diario?`<button class="chip ok" style="border:0;cursor:pointer;margin-top:4px" data-act="go" data-to="refeicao" data-id="${i.id_registro_diario}">Lançada no diário · ver</button>`:""}</div><button class="icon-btn" data-act="delPlanItem" data-id="${i.id_item}" aria-label="Remover item">${svg("trash")}</button></div></div>`}).join(""):`<div class="empty">Inclua receitas neste planejamento.</div>`}`;
+}
+const readOf=(u,id)=>T("leitura_conteudo").find(l=>l.id_usuaria==u.id_usuaria&&l.id_conteudo==id);
+function contentsResults(){
+  const u=me(),q=ui.q.toLowerCase();
+  const l=T("conteudo_educativo").filter(c=>c.publicado&&(!ui.cat||c.categoria===ui.cat)&&(!ui.savedOnly||readOf(u,c.id_conteudo)?.salvo)&&(!q||c.titulo.toLowerCase().includes(q)));
+  return l.length?l.map(c=>{const r=readOf(u,c.id_conteudo);return `<div class="card tap" data-act="go" data-to="conteudo" data-id="${c.id_conteudo}"><div class="row sb"><h3 class="grow">${esc(c.titulo)}</h3>${r?.salvo?`<span class="heart on">${svg("heart","fill")}</span>`:""}</div><div class="muted">${esc(c.resumo||"")}</div><div class="tag-row"><span class="chip">${CCAT[c.categoria]}</span>${chip(c.fase_ciclo)}${r?`<span class="chip ok">Lido em ${br(r.data_ultima_leitura.slice(0,10))}</span>`:""}</div></div>`}).join(""):`<div class="empty">Nenhum conteúdo encontrado.</div>`;
+}
+function vConteudos(){return `<div class="search">${svg("search")}<input id="q" data-on="q" placeholder="Buscar conteúdo" value="${esc(ui.q)}" aria-label="Buscar conteúdo"></div>
+  <div class="chips"><button class="${ui.savedOnly?"on":""}" data-act="savedOnly">Salvos</button><button class="${!ui.cat?"on":""}" data-act="cat" data-id="">Todos</button>${opts(CCAT).map(([k,v])=>`<button class="${ui.cat===k?"on":""}" data-act="cat" data-id="${k}">${v}</button>`).join("")}</div>
+  <div id="results" style="display:flex;flex-direction:column;gap:10px">${contentsResults()}</div>`}
+function vConteudo(id){
+  const u=me();const c=T("conteudo_educativo").find(x=>x.id_conteudo==id);if(!c)return `<div class="empty">Conteúdo não encontrado.</div>`;
+  let r=readOf(u,id);if(!r){r={id_usuaria:u.id_usuaria,id_conteudo:+id,data_ultima_leitura:"",salvo:false};T("leitura_conteudo").push(r)}
+  r.data_ultima_leitura=new Date().toISOString();persist();
+  return `<div class="card"><div class="tag-row"><span class="chip">${CCAT[c.categoria]}</span>${chip(c.fase_ciclo)}</div><h2 style="font-size:20px">${esc(c.titulo)}</h2><div class="muted">Publicado em ${br(c.data_publicacao)}</div><div class="pre" style="margin-top:6px">${esc(c.corpo)}</div>${c.fonte?`<div class="muted" style="margin-top:8px">Fonte: ${esc(c.fonte)}</div>`:""}</div>
+  <button class="btn ${r.salvo?"sec2":""} block" data-act="saveCont" data-id="${id}">${svg("heart",r.salvo?"fill":"")} ${r.salvo?"Remover dos salvos":"Salvar para ler depois"}</button>`;
+}
+function vHabitos(){
+  const u=me();const hs=T("habito").filter(h=>h.id_usuaria==u.id_usuaria);const t=today();
+  const card=h=>{const regs=T("registro_habito").filter(r=>r.id_habito==h.id_habito);const rt=regs.find(r=>r.data_registro==t);
+    const dots=[-6,-5,-4,-3,-2,-1,0].map(o=>{const r=regs.find(x=>x.data_registro==addDays(t,o));return `<i class="${r?(r.concluido?"full":(r.valor_realizado>0?"half":"")):""}" title="${br(addDays(t,o))}"></i>`}).join("");
+    const pct=h.meta_diaria&&rt?Math.min(100,(rt.valor_realizado||0)/h.meta_diaria*100):0;
+    return `<div class="card" style="${h.ativo?"":"opacity:.65"}"><div class="row sb"><div class="grow"><h3>${esc(h.nome)}</h3><div class="muted">${esc(h.descricao||"")}</div></div>${rt?.concluido?`<span class="chip ok">Meta cumprida</span>`:""}</div>
+      ${h.meta_diaria?`<div class="row sb"><span class="sub pct">Hoje: <b>${rt?n1(rt.valor_realizado||0):0}</b> / ${n1(h.meta_diaria)} ${esc(h.unidade_meta||"")}</span></div><div class="bar"><i style="width:${pct}%"></i></div>`:`<div class="sub">Hoje: ${rt?.concluido?"concluído":"pendente"}</div>`}
+      <div class="row sb"><div class="dots" aria-label="Últimos 7 dias">${dots}</div><div class="row">${h.ativo?`<button class="btn sm" data-act="regHabit" data-id="${h.id_habito}">Registrar</button>`:""}<button class="icon-btn" data-act="editHabit" data-id="${h.id_habito}" aria-label="Editar hábito">${svg("edit")}</button></div></div>
+      <div class="row"><button class="btn sec2 sm" data-act="togHabit" data-id="${h.id_habito}">${h.ativo?"Desativar":"Reativar"}</button></div></div>`};
+  const a=hs.filter(h=>h.ativo),i=hs.filter(h=>!h.ativo);
+  return `<div class="sec"><h2>Meus hábitos</h2><button class="btn sm" data-act="newHabit">${svg("plus")} Novo</button></div>
+  ${a.length?a.map(card).join(""):`<div class="empty">Nenhum hábito ativo. Crie um, como "Beber água", para acompanhar todos os dias.</div>`}
+  ${i.length?`<h3 class="muted" style="margin-top:6px">Desativados</h3>${i.map(card).join("")}`:""}`;
+}
+function vLembretes(){
+  const u=me();const ls=T("lembrete").filter(l=>l.id_usuaria==u.id_usuaria).sort((a,b)=>a.horario.localeCompare(b.horario));
+  return `<div class="sec"><h2>Meus lembretes</h2><button class="btn sm" data-act="newRem">${svg("plus")} Novo</button></div>
+  ${ls.length?ls.map(l=>{const h=l.id_habito?T("habito").find(x=>x.id_habito==l.id_habito):null;return `<div class="card"><div class="row"><div class="grow"><h3>${esc(l.titulo)}</h3><div class="muted">${esc(l.mensagem||"")}</div></div><button class="switch ${l.ativo?"on":""}" role="switch" aria-checked="${l.ativo}" aria-label="Ativar lembrete" data-act="togRem" data-id="${l.id_lembrete}"></button></div>
+    <div class="row sb wrap"><b class="pct" style="font-size:18px">${l.horario}</b><div class="days">${DIAS.map((d,i)=>`<span class="${l.dias_semana[i]==="1"?"on":""}">${d}</span>`).join("")}</div></div>
+    <div class="row sb"><span class="muted">${h?"Hábito: "+esc(h.nome):"Sem hábito associado"}</span><div class="row"><button class="icon-btn" data-act="editRem" data-id="${l.id_lembrete}" aria-label="Editar">${svg("edit")}</button><button class="icon-btn" data-act="delRem" data-id="${l.id_lembrete}" aria-label="Excluir">${svg("trash")}</button></div></div></div>`}).join(""):`<div class="empty">Nenhum lembrete criado.</div>`}`;
+}
+function vCiclo(){
+  const u=me();const cs=cyclesOf(u);const ph=phase(u);const done=cs.map(c=>c.duracao_ciclo_dias).filter(Boolean);
+  const avg=done.length?done.reduce((a,b)=>a+b,0)/done.length:null;
+  const sy=T("sintoma_ciclo").filter(s=>cs.some(c=>c.id_ciclo==s.id_ciclo)).sort((a,b)=>b.data_registro.localeCompare(a.data_registro)).slice(0,8);
+  const sug=ph&&ph.fase?{r:T("receita").filter(r=>vis(r)&&r.fase_ciclo_indicada===ph.fase),c:T("conteudo_educativo").filter(c=>c.publicado&&c.fase_ciclo===ph.fase)}:null;
+  return `<div class="card">${ph?(ph.fase?`<div class="muted">Hoje é o dia</div><div class="big">${ph.day}º <span class="muted">do ciclo</span></div><div>Fase ${chip(ph.fase)}</div>`:`<div class="sub">O último ciclo registrado começou há mais de 60 dias. Registre o início do novo ciclo.</div>`):`<div class="sub">Registre o início da sua menstruação para acompanhar as fases do ciclo.</div>`}
+    <button class="btn block" data-act="newCycle">${svg("plus")} Registrar início da menstruação</button></div>
+  ${sug?`<div class="sec"><h2>Sugestões para a fase ${FASE[ph.fase].toLowerCase()}</h2></div>
+    ${sug.r.map(r=>`<div class="card tap" data-act="go" data-to="receita" data-id="${r.id_receita}"><div class="row sb"><h3>${esc(r.titulo)}</h3><span class="chip">Receita</span></div><div class="muted">${esc(r.descricao||"")}</div></div>`).join("")}
+    ${sug.c.map(c=>`<div class="card tap" data-act="go" data-to="conteudo" data-id="${c.id_conteudo}"><div class="row sb"><h3>${esc(c.titulo)}</h3><span class="chip">Conteúdo</span></div><div class="muted">${esc(c.resumo||"")}</div></div>`).join("")}
+    ${!sug.r.length&&!sug.c.length?`<div class="empty">Sem sugestões cadastradas para esta fase.</div>`:""}`:""}
+  <div class="sec"><h2>Meus ciclos</h2>${avg?`<span class="chip">Média: ${n1(avg)} dias</span>`:""}</div>
+  ${cs.length?cs.map(c=>`<div class="card"><div class="row sb"><div class="grow"><h3>Início em ${br(c.data_inicio)}</h3><div class="muted">${c.data_fim_menstruacao?`Menstruação até ${br(c.data_fim_menstruacao)} (${diffDays(c.data_inicio,c.data_fim_menstruacao)+1} dias)`:"Término da menstruação não informado"}</div></div><button class="icon-btn" data-act="editCycle" data-id="${c.id_ciclo}" aria-label="Editar ciclo">${svg("edit")}</button><button class="icon-btn" data-act="delCycle" data-id="${c.id_ciclo}" aria-label="Excluir ciclo">${svg("trash")}</button></div>
+    ${c.duracao_ciclo_dias?`<div class="row"><div class="bar grow"><i style="width:${Math.min(100,c.duracao_ciclo_dias/45*100)}%"></i></div><b class="pct">${c.duracao_ciclo_dias} dias</b></div>`:`<div class="muted">Duração calculada quando o próximo ciclo for iniciado.</div>`}</div>`).join(""):`<div class="empty">Nenhum ciclo registrado.</div>`}
+  <div class="sec"><h2>Sintomas</h2><button class="btn sm" data-act="newSym">${svg("plus")} Registrar</button></div>
+  ${sy.length?sy.map(s=>`<div class="card"><div class="row sb"><div class="grow"><h3>${SINT[s.tipo]} · intensidade ${s.intensidade}/5</h3><div class="muted">${br(s.data_registro)}${s.observacao?" · "+esc(s.observacao):""}</div></div><button class="icon-btn" data-act="delSym" data-id="${s.id_sintoma}" aria-label="Excluir sintoma">${svg("trash")}</button></div></div>`).join(""):`<div class="empty">Nenhum sintoma registrado.</div>`}`;
+}
+function vPerfil(){
+  const u=me();const age=Math.floor(diffDays(u.data_nascimento,today())/365.25);
+  const imc=u.peso_kg&&u.altura_cm?u.peso_kg/Math.pow(u.altura_cm/100,2):null;
+  return `<div class="card"><div class="row sb"><div class="grow"><h2>${esc(u.nome)}</h2><div class="muted">${esc(u.email)}</div></div><button class="icon-btn" data-act="editProfile" aria-label="Editar perfil">${svg("edit")}</button></div>
+    <div class="macros"><div class="macro"><b>${age}</b><span class="muted">anos</span></div><div class="macro"><b>${u.peso_kg?n1(u.peso_kg):"–"}</b><span class="muted">kg</span></div><div class="macro"><b>${u.altura_cm||"–"}</b><span class="muted">cm</span></div></div>
+    ${imc?`<div class="muted">IMC estimado: ${n1(imc)}</div>`:""}</div>
+  <div class="card"><h2>Objetivo e meta</h2><div class="row sb"><span class="sub">Objetivo</span><b>${u.objetivo?OBJ[u.objetivo]:"Não definido"}</b></div><div class="row sb"><span class="sub">Meta diária</span><b class="pct">${u.meta_calorica_kcal?kc(u.meta_calorica_kcal)+" kcal":"Não definida"}</b></div><button class="btn block" data-act="editProfile">Editar perfil e metas</button></div>
+  <div class="card"><h2>Privacidade</h2><div class="muted">Seus dados de alimentação, hábitos e ciclo são privados. A administradora não tem acesso a eles. Você pode excluir sua conta e todos os dados a qualquer momento.</div><button class="btn danger block" data-act="delAccount">Excluir minha conta</button></div>`;
+}
+function vMais(){
+  const it=[["alimentos","apple","Catálogo de alimentos","Calorias e macros por 100 g"],["conteudos","book2","Conteúdos educativos","Artigos e dicas"],["ciclo","drop","Ciclo menstrual","Fases, sintomas e sugestões"],["lembretes","bell","Lembretes","Horários e dias da semana"],["perfil","user","Perfil e metas","Seus dados e objetivo"]];
+  return it.map(i=>`<button class="menu-item" data-act="go" data-to="${i[0]}"><span style="color:var(--purple)">${svg(i[1])}</span><span class="grow"><b style="font-weight:500">${i[2]}</b><br><span class="muted">${i[3]}</span></span>${svg("chev")}</button>`).join("")+
+  `<button class="menu-item" data-act="logout"><span style="color:var(--gray)">${svg("out")}</span><span class="grow"><b style="font-weight:500">Sair</b></span></button><div class="muted" style="text-align:center">${BUILD}</div>`;
+}
+
+/* ===== Área da administradora ===== */
+function vAAlimentos(){const l=T("alimento").slice().sort((a,b)=>a.nome.localeCompare(b.nome));
+  return `<div class="sec"><h2>Alimentos (${l.length})</h2><button class="btn sm" data-act="afAdd">${svg("plus")} Novo</button></div>
+  ${l.map(a=>`<div class="card"><div class="row"><div class="grow"><h3>${esc(a.nome)}</h3><div class="muted">${esc(a.categoria)} · ${kc(a.calorias_100g)} kcal · P ${n1(a.proteinas_100g)} · C ${n1(a.carboidratos_100g)} · G ${n1(a.gorduras_100g)} (100 g)</div></div><button class="icon-btn" data-act="afEdit" data-id="${a.id_alimento}" aria-label="Editar">${svg("edit")}</button><button class="icon-btn" data-act="afDel" data-id="${a.id_alimento}" aria-label="Excluir">${svg("trash")}</button></div></div>`).join("")}`}
+function vAReceitas(){const l=T("receita").filter(r=>!r.id_usuaria);
+  return `<div class="sec"><h2>Receitas (${l.length})</h2><button class="btn sm" data-act="arAdd">${svg("plus")} Nova</button></div>
+  ${l.map(r=>`<div class="card"><div class="row"><div class="grow"><h3>${esc(r.titulo)}</h3><div class="muted">${r.fase_ciclo_indicada?FASE[r.fase_ciclo_indicada]:"Sem fase"}${r.calorias_porcao?` · ${kc(r.calorias_porcao)} kcal${r.porcoes>1?"/porção":""}`:""}</div></div><button class="icon-btn" data-act="arEdit" data-id="${r.id_receita}" aria-label="Editar">${svg("edit")}</button><button class="icon-btn" data-act="arDel" data-id="${r.id_receita}" aria-label="Excluir">${svg("trash")}</button></div></div>`).join("")}`}
+function vAConteudos(){const l=T("conteudo_educativo");
+  return `<div class="sec"><h2>Conteúdos (${l.length})</h2><button class="btn sm" data-act="acAdd">${svg("plus")} Novo</button></div>
+  ${l.map(c=>`<div class="card"><div class="row"><div class="grow"><h3>${esc(c.titulo)}</h3><div class="muted">${CCAT[c.categoria]} · ${c.fase_ciclo?FASE[c.fase_ciclo]:"Sem fase"}</div><div style="margin-top:4px"><span class="chip ${c.publicado?"ok":""}">${c.publicado?"Publicado":"Rascunho"}</span></div></div><button class="icon-btn" data-act="acEdit" data-id="${c.id_conteudo}" aria-label="Editar">${svg("edit")}</button><button class="icon-btn" data-act="acDel" data-id="${c.id_conteudo}" aria-label="Excluir">${svg("trash")}</button></div></div>`).join("")}`}
+
+/* ===== Casca do app ===== */
+const TITLES={diario:"Diário alimentar",refeicao:"Refeição",alimentos:"Alimentos",receitas:"Receitas",receita:"Receita",planos:"Planejamento",plano:"Planejamento",conteudos:"Conteúdos",conteudo:"Conteúdo",habitos:"Hábitos",lembretes:"Lembretes",ciclo:"Ciclo menstrual",perfil:"Perfil",mais:"Mais",a_alimentos:"Admin · Alimentos",a_receitas:"Admin · Receitas",a_conteudos:"Admin · Conteúdos"};
+const TABS=[["diario","book","Diário"],["receitas","chef","Receitas"],["planos","cal","Planejar"],["habitos","habit","Hábitos"],["mais","more","Mais"]];
+const ATABS=[["a_alimentos","apple","Alimentos"],["a_receitas","chef","Receitas"],["a_conteudos","book2","Conteúdos"]];
+function render(){
+  const app=$("#app");let keep=$("#modal");
+  if(!db.session){app.innerHTML=`<div class="hdr"><div class="brand">FemmeTrack</div></div>${authView()}`;if(ui.modal)renderModal();return}
+  const r=cur();const admin=isAdmin();
+  const MAIS=["alimentos","conteudos","ciclo","lembretes","perfil"];
+  const view={diario:()=>vDiario(),refeicao:()=>vRefeicao(r.p),alimentos:vAlimentos,receitas:vReceitas,receita:()=>vReceita(r.p.id),planos:vPlanos,plano:()=>vPlano(r.p.id),conteudos:vConteudos,conteudo:()=>vConteudo(r.p.id),habitos:vHabitos,lembretes:vLembretes,ciclo:vCiclo,perfil:vPerfil,mais:vMais,a_alimentos:vAAlimentos,a_receitas:vAReceitas,a_conteudos:vAConteudos}[r.name];
+  const root=nav.length===1;
+  const left=root?`<div class="brand">${admin?"FemmeTrack · Admin":"FemmeTrack"}</div>`:`<button class="icon-btn" data-act="back" aria-label="Voltar">${svg("back")}</button><h1>${TITLES[r.name]||""}</h1>`;
+  const right=admin?`<button class="icon-btn" data-act="logout" aria-label="Sair">${svg("out")}</button>`:`<button class="icon-btn" data-act="go" data-to="lembretes" aria-label="Lembretes e notificações">${svg("bell")}</button>`;
+  const tabs=admin?ATABS:TABS;
+  const activeTab=admin?r.name:(["diario","refeicao"].includes(r.name)?"diario":["receitas","receita"].includes(r.name)?"receitas":["planos","plano"].includes(r.name)?"planos":r.name==="habitos"?"habitos":"mais");
+  const title=root&&!admin&&r.name!=="diario"?`<h1>${TITLES[r.name]}</h1>`:"";
+  app.innerHTML=`<div class="hdr">${left}${right}</div><main class="main" id="main">${view?view():""}</main>
+  <nav class="nav" aria-label="Navegação principal">${tabs.map(t=>`<button class="${activeTab===t[0]?"on":""}" data-act="tab" data-to="${t[0]}" ${activeTab===t[0]?'aria-current="page"':""}>${svg(t[1])}<span>${t[2]}</span></button>`).join("")}</nav>
+  ${ui.toast?`<div class="toast" role="status">${esc(ui.toast)}</div>`:""}`;
+  if(ui.modal)renderModal();
+}
+
+/* ===== Ações ===== */
+const A={
+ go:(d)=>go(d.to,{id:d.id}),
+ tab:(d)=>go(d.to,{},true),
+ back:()=>back(),
+ authTab:(d)=>{ui.authTab=d.id;render()},
+ fillDemo:(d)=>{$("#l_email").value=d.id==="u"?"demo@femmetrack.com":"admin@femmetrack.com";$("#l_senha").value=d.id==="u"?"123456":"admin123"},
+ resetDemo:()=>confirmBox("Isto apaga todos os dados salvos neste navegador, inclusive contas que você criou, e recria a conta demo e os dados de exemplo. Continuar?",()=>{seed().then(()=>{ui.authTab="login";nav=[{name:"diario",p:{}}];render();toast("Dados de demonstração restaurados. Entre com demo@femmetrack.com / 123456")})},"Restaurar"),
+ logout:()=>{db.session=null;persist();nav=[{name:"diario",p:{}}];ui.authTab="login";render()},
+ closeModal:()=>closeModal(),
+ confirmYes:()=>{const f=ui.modal.onYes;ui.modal=null;renderModal();f();persist();render()},
+ cat:(d)=>{ui.cat=d.id;render()},fase:(d)=>{ui.fase=d.id;render()},favOnly:()=>{ui.favOnly=!ui.favOnly;render()},mine:()=>{ui.mine=!ui.mine;render()},savedOnly:()=>{ui.savedOnly=!ui.savedOnly;render()},
+ day:(d)=>{ui.date=addDays(ui.date,+d.id);render()},
+ // diário
+ slot:(d)=>{const r=findReg(me().id_usuaria,d.tipo,ui.date);go("refeicao",r?{id:r.id_registro}:{tipo:d.tipo,date:ui.date})},
+ editMeal:(d)=>{const r=T("registro_alimentar").find(x=>x.id_registro==d.id);openForm({title:"Horário e observações",fields:[{n:"horario",l:"Horário",t:"time",s:3},{n:"obs",l:"Observações",t:"textarea",ph:"Ex.: como você se sentiu"}],values:{horario:r.horario||"",obs:r.observacao},onSubmit:v=>{r.horario=v.horario||null;r.observacao=v.obs}})},
+ delMeal:(d)=>confirmBox("Limpar esta refeição? Todos os alimentos dela serão removidos.",()=>{db.t.item_registro_alimentar=T("item_registro_alimentar").filter(i=>i.id_registro!=d.id);db.t.registro_alimentar=T("registro_alimentar").filter(r=>r.id_registro!=d.id);T("item_planejamento").forEach(i=>{if(i.id_registro_diario==d.id){i.id_registro_diario=null;i.diario_itens=null;i.diario_tag=null}});nav.pop();toast("Refeição limpa")},"Limpar"),
+ addItem:(d)=>openForm({title:"Adicionar alimento",fields:[{n:"a",l:"Alimento",t:"select",opts:T("alimento").slice().sort((a,b)=>a.nome.localeCompare(b.nome)).map(a=>[a.id_alimento,`${a.nome} (${kc(a.calorias_100g)} kcal/100 g)`]),req:1},{n:"q",l:"Quantidade consumida (g)",t:"number",req:1,min:1,step:"any"}],values:{q:100},onSubmit:v=>{
+   if(!(v.q>0))return "A quantidade deve ser maior que zero.";const r=d.id?T("registro_alimentar").find(x=>x.id_registro==d.id):ensureReg(me().id_usuaria,d.tipo,d.date);
+   const ex=T("item_registro_alimentar").find(i=>i.id_registro==r.id_registro&&i.id_alimento==v.a);
+   if(ex)ex.quantidade_g+=v.q;else T("item_registro_alimentar").push({id_registro:r.id_registro,id_alimento:+v.a,quantidade_g:v.q})}}),
+ addRecipeMeal:(d)=>openForm({title:"Adicionar receita à refeição",fields:[{n:"r",l:"Receita",t:"select",opts:T("receita").filter(vis).map(r=>[r.id_receita,`${r.titulo}${r.calorias_porcao?` (${kc(r.calorias_porcao)} ${r.id_usuaria||!(r.porcoes>1)?"kcal":"kcal/porção"})`:""}`]),req:1},{n:"p",l:"Quantas porções você comeu?",t:"number",req:1,min:0.25,step:"any"}],values:{p:1},note:"Os ingredientes da receita entram nesta refeição, já com as calorias e os macros.",onSubmit:v=>{
+   if(!(v.p>0))return "A quantidade de porções deve ser maior que zero.";const res=addRecipeToDiary(me().id_usuaria,+v.r,d.date,d.tipo,v.p);if(res.err)return res.err;if(res.skipped)toast("Alguns ingredientes (colher, xícara ou unidade) não foram incluídos")}}),
+ recDiary:(d)=>openForm({title:"Adicionar ao diário",fields:[{n:"d",l:"Data",t:"date",req:1,s:3},{n:"t",l:"Refeição",t:"select",opts:opts(MEAL),req:1,s:3},{n:"p",l:"Porções",t:"number",req:1,min:0.25,step:"any"}],values:{d:today(),t:"almoco",p:1},onSubmit:v=>{
+   if(!(v.p>0))return "A quantidade de porções deve ser maior que zero.";const res=addRecipeToDiary(me().id_usuaria,+d.id,v.d,v.t,v.p);if(res.err)return res.err;ui.date=v.d;toast(res.skipped?"Adicionada ao diário, mas alguns ingredientes (colher, xícara ou unidade) ficaram de fora":"Receita adicionada ao diário de "+br(v.d))}}),
+ editItem:(d)=>{const i=T("item_registro_alimentar").find(x=>x.id_registro==d.id&&x.id_alimento==d.aid);openForm({title:"Editar quantidade",fields:[{n:"q",l:`Quantidade de ${food(d.aid).nome} (g)`,t:"number",req:1,min:1,step:"any"}],values:{q:i.quantidade_g},onSubmit:v=>{if(!(v.q>0))return "A quantidade deve ser maior que zero.";i.quantidade_g=v.q}})},
+ delItem:(d)=>{db.t.item_registro_alimentar=T("item_registro_alimentar").filter(i=>!(i.id_registro==d.id&&i.id_alimento==d.aid));persist();render()},
+ // receitas
+ fav:(d)=>{const u=me();const ex=T("receita_favorita").find(f=>f.id_usuaria==u.id_usuaria&&f.id_receita==d.id);
+   if(ex){db.t.receita_favorita=T("receita_favorita").filter(f=>f!==ex);toast("Removida dos favoritos")}else{T("receita_favorita").push({id_usuaria:u.id_usuaria,id_receita:+d.id,data_favoritada:new Date().toISOString()});toast("Adicionada aos favoritos")}persist();render()},
+ planAdd:(d)=>{const u=me();const ps=T("planejamento_refeicao").filter(p=>p.id_usuaria==u.id_usuaria);
+   if(!ps.length){toast("Crie um planejamento primeiro");return go("planos",{},true)}
+   openForm({title:"Adicionar ao planejamento",fields:[{n:"p",l:"Planejamento",t:"select",opts:ps.map(p=>[p.id_planejamento,`${p.nome} (${br(p.data_inicio)} a ${br(p.data_fim)})`]),req:1},{n:"d",l:"Data prevista",t:"date",req:1,s:3},{n:"t",l:"Refeição",t:"select",opts:opts(MEAL),req:1,s:3}],values:{p:ps[0].id_planejamento,d:today(),t:"almoco"},onSubmit:v=>addPlanItem(+v.p,+d.id,v.d,v.t)})},
+ // planejamento
+ newPlan:()=>openForm({title:"Novo planejamento",fields:[{n:"nome",l:"Nome",req:1,ph:"Ex.: Semana 1 de novembro"},{n:"i",l:"Início",t:"date",req:1,s:3},{n:"f",l:"Término",t:"date",req:1,s:3}],values:{i:today(),f:addDays(today(),6)},onSubmit:v=>{
+   if(v.f<v.i)return "A data de término não pode ser anterior ao início.";T("planejamento_refeicao").push({id_planejamento:nextId("planejamento_refeicao"),id_usuaria:me().id_usuaria,nome:v.nome,data_inicio:v.i,data_fim:v.f})}}),
+ delPlan:(d)=>confirmBox("Excluir este planejamento?",()=>{db.t.item_planejamento=T("item_planejamento").filter(i=>i.id_planejamento!=d.id);db.t.planejamento_refeicao=T("planejamento_refeicao").filter(p=>p.id_planejamento!=d.id);nav.pop();toast("Planejamento excluído")}),
+ addPlanItem:(d)=>{const p=T("planejamento_refeicao").find(x=>x.id_planejamento==d.id);openForm({title:"Incluir receita",fields:[{n:"r",l:"Receita",t:"select",opts:T("receita").filter(vis).map(r=>[r.id_receita,r.titulo]),req:1},{n:"d",l:"Data prevista",t:"date",req:1,min:p.data_inicio,max:p.data_fim,s:3},{n:"t",l:"Refeição",t:"select",opts:opts(MEAL),req:1,s:3}],values:{d:p.data_inicio>today()?p.data_inicio:(p.data_fim<today()?p.data_fim:today()),t:"almoco"},onSubmit:v=>addPlanItem(+d.id,+v.r,v.d,v.t)})},
+ togPlan:(d)=>{const i=T("item_planejamento").find(x=>x.id_item==d.id);i.realizada=!i.realizada;let msg="";
+   if(i.realizada){msg=launchDiary(i)?"Realizada e adicionada ao diário de "+br(i.data_prevista):"Marcada como realizada, mas esta receita não tem ingredientes em g ou ml para lançar no diário"}
+   else if(i.id_registro_diario||i.diario_itens){unlaunchDiary(i);msg="Desmarcada e removida do diário"}
+   persist();render();if(msg)toast(msg)},
+ delPlanItem:(d)=>{db.t.item_planejamento=T("item_planejamento").filter(i=>i.id_item!=d.id);persist();render()},
+ // conteúdos
+ saveCont:(d)=>{const r=readOf(me(),d.id);r.salvo=!r.salvo;persist();toast(r.salvo?"Conteúdo salvo":"Removido dos salvos")},
+ // hábitos
+ newHabit:()=>habitForm(null),editHabit:(d)=>habitForm(T("habito").find(h=>h.id_habito==d.id)),
+ togHabit:(d)=>{const h=T("habito").find(x=>x.id_habito==d.id);h.ativo=!h.ativo;persist();render()},
+ regHabit:(d)=>{const h=T("habito").find(x=>x.id_habito==d.id);const t=today();let r=T("registro_habito").find(x=>x.id_habito==h.id_habito&&x.data_registro==t);
+   openForm({title:`Registrar: ${h.nome}`,fields:[{n:"v",l:`Valor realizado hoje${h.unidade_meta?" ("+h.unidade_meta+")":""}`,t:"number",min:0,step:"any",req:h.meta_diaria?1:0},{n:"c",l:"Meta concluída",t:"checkbox"}],values:{v:r?.valor_realizado??"",c:r?.concluido??false},onSubmit:v=>{
+     if(v.v!==null&&v.v<0)return "O valor não pode ser negativo.";const concl=v.c||(h.meta_diaria&&v.v!==null&&v.v>=h.meta_diaria);
+     if(r){r.valor_realizado=v.v;r.concluido=!!concl}else T("registro_habito").push({id_registro_habito:nextId("registro_habito"),id_habito:h.id_habito,data_registro:t,valor_realizado:v.v,concluido:!!concl})}})},
+ // lembretes
+ newRem:()=>remForm(null),editRem:(d)=>remForm(T("lembrete").find(l=>l.id_lembrete==d.id)),
+ togRem:(d)=>{const l=T("lembrete").find(x=>x.id_lembrete==d.id);l.ativo=!l.ativo;persist();render();toast(l.ativo?"Lembrete ativado":"Lembrete desativado")},
+ delRem:(d)=>confirmBox("Excluir este lembrete?",()=>{db.t.lembrete=T("lembrete").filter(l=>l.id_lembrete!=d.id)}),
+ // ciclo
+ newCycle:()=>openForm({title:"Início da menstruação",fields:[{n:"i",l:"Primeiro dia",t:"date",req:1,max:today(),s:3},{n:"f",l:"Último dia (opcional)",t:"date",s:3}],values:{i:today()},onSubmit:v=>cycleSave(null,v)}),
+ editCycle:(d)=>{const c=T("ciclo_menstrual").find(x=>x.id_ciclo==d.id);openForm({title:"Editar ciclo",fields:[{n:"i",l:"Primeiro dia",t:"date",req:1,max:today(),s:3},{n:"f",l:"Último dia",t:"date",s:3}],values:{i:c.data_inicio,f:c.data_fim_menstruacao||""},onSubmit:v=>cycleSave(c,v)})},
+ delCycle:(d)=>confirmBox("Excluir este ciclo e seus sintomas?",()=>{db.t.sintoma_ciclo=T("sintoma_ciclo").filter(s=>s.id_ciclo!=d.id);db.t.ciclo_menstrual=T("ciclo_menstrual").filter(c=>c.id_ciclo!=d.id);recalcCycles(me().id_usuaria)}),
+ newSym:()=>{const cs=cyclesOf(me());if(!cs.length){toast("Registre um ciclo antes de adicionar sintomas");return}
+   openForm({title:"Registrar sintoma",fields:[{n:"c",l:"Ciclo",t:"select",opts:cs.map(c=>[c.id_ciclo,"Início em "+br(c.data_inicio)]),req:1},{n:"d",l:"Data",t:"date",req:1,s:3},{n:"t",l:"Tipo",t:"select",opts:opts(SINT),req:1,s:3},{n:"n",l:"Intensidade (1 leve a 5 forte)",t:"select",opts:[1,2,3,4,5].map(x=>[x,String(x)]),req:1},{n:"o",l:"Observações",t:"textarea"}],note:"A data do sintoma deve estar dentro do ciclo escolhido.",values:{c:cs[0].id_ciclo,d:today(),n:2},onSubmit:v=>{
+     const c=T("ciclo_menstrual").find(x=>x.id_ciclo==v.c);const nx=cs.filter(x=>x.data_inicio>c.data_inicio).sort((a,b)=>a.data_inicio.localeCompare(b.data_inicio))[0];
+       if(v.d<c.data_inicio||(nx&&v.d>=nx.data_inicio))return nx?`A data deve estar dentro do ciclo escolhido: de ${br(c.data_inicio)} a ${br(addDays(nx.data_inicio,-1))}.`:`A data deve ser a partir do início do ciclo escolhido (${br(c.data_inicio)}).`;
+     T("sintoma_ciclo").push({id_sintoma:nextId("sintoma_ciclo"),id_ciclo:+v.c,data_registro:v.d,tipo:v.t,intensidade:+v.n,observacao:v.o})}})},
+ delSym:(d)=>{db.t.sintoma_ciclo=T("sintoma_ciclo").filter(s=>s.id_sintoma!=d.id);persist();render()},
+ // perfil
+ editProfile:()=>{const u=me();openForm({title:"Perfil e metas",fields:[{n:"nome",l:"Nome",req:1},{n:"peso",l:"Peso (kg)",t:"number",min:1,step:"any",s:3},{n:"alt",l:"Altura (cm)",t:"number",min:1,step:"1",s:3},{n:"obj",l:"Objetivo",t:"select",opts:opts(OBJ),blank:"Selecione"},{n:"meta",l:"Meta diária de calorias (kcal)",t:"number",min:1,step:"1"}],values:{nome:u.nome,peso:u.peso_kg??"",alt:u.altura_cm??"",obj:u.objetivo||"",meta:u.meta_calorica_kcal??""},onSubmit:v=>{
+   if(v.peso!==null&&v.peso<=0)return "O peso deve ser maior que zero.";if(v.alt!==null&&v.alt<=0)return "A altura deve ser maior que zero.";if(v.meta!==null&&v.meta<=0)return "A meta de calorias deve ser maior que zero.";
+   u.nome=v.nome;u.peso_kg=v.peso;u.altura_cm=v.alt===null?null:Math.round(v.alt);u.objetivo=v.obj||null;u.meta_calorica_kcal=v.meta===null?null:Math.round(v.meta);toast("Perfil atualizado")}})},
+ delAccount:()=>confirmBox("Excluir sua conta e todos os dados pessoais (refeições, hábitos, lembretes, ciclos)? Esta ação não pode ser desfeita.",()=>{
+   const id=me().id_usuaria;const hid=T("habito").filter(h=>h.id_usuaria==id).map(h=>h.id_habito),rid=T("registro_alimentar").filter(r=>r.id_usuaria==id).map(r=>r.id_registro),pid=T("planejamento_refeicao").filter(p=>p.id_usuaria==id).map(p=>p.id_planejamento),cid=T("ciclo_menstrual").filter(c=>c.id_usuaria==id).map(c=>c.id_ciclo);
+   db.t.item_registro_alimentar=T("item_registro_alimentar").filter(i=>!rid.includes(i.id_registro));db.t.registro_alimentar=T("registro_alimentar").filter(r=>r.id_usuaria!=id);
+   db.t.item_planejamento=T("item_planejamento").filter(i=>!pid.includes(i.id_planejamento));db.t.planejamento_refeicao=T("planejamento_refeicao").filter(p=>p.id_usuaria!=id);
+   db.t.registro_habito=T("registro_habito").filter(r=>!hid.includes(r.id_habito));db.t.habito=T("habito").filter(h=>h.id_usuaria!=id);
+   db.t.lembrete=T("lembrete").filter(l=>l.id_usuaria!=id);db.t.sintoma_ciclo=T("sintoma_ciclo").filter(s=>!cid.includes(s.id_ciclo));db.t.ciclo_menstrual=T("ciclo_menstrual").filter(c=>c.id_usuaria!=id);
+   {const mine=T("receita").filter(r=>r.id_usuaria==id).map(r=>r.id_receita);db.t.ingrediente_receita=T("ingrediente_receita").filter(i=>!mine.includes(i.id_receita));db.t.receita_favorita=T("receita_favorita").filter(f=>!mine.includes(f.id_receita));db.t.receita=T("receita").filter(r=>r.id_usuaria!=id)}db.t.receita_favorita=T("receita_favorita").filter(f=>f.id_usuaria!=id);db.t.leitura_conteudo=T("leitura_conteudo").filter(l=>l.id_usuaria!=id);db.t.usuaria=T("usuaria").filter(u=>u.id_usuaria!=id);
+   db.session=null;nav=[{name:"diario",p:{}}];ui.authTab="login"},"Excluir conta"),
+ // admin: alimentos
+ afAdd:()=>foodForm(null),afEdit:(d)=>foodForm(food(d.id)),
+ afDel:(d)=>{const used=T("item_registro_alimentar").some(i=>i.id_alimento==d.id)||T("ingrediente_receita").some(i=>i.id_alimento==d.id);
+   if(used){toast("Alimento em uso em registros ou receitas e não pode ser excluído");return}confirmBox("Excluir este alimento do catálogo?",()=>{db.t.alimento=T("alimento").filter(a=>a.id_alimento!=d.id)})},
+ // receitas da usuária
+ recNew:()=>recipeForm(null),
+ recEdit:(d)=>{const r=T("receita").find(x=>x.id_receita==d.id);if(r&&r.id_usuaria&&r.id_usuaria===me().id_usuaria)recipeForm(r)},
+ recDel:(d)=>{const r=T("receita").find(x=>x.id_receita==d.id);if(!r||r.id_usuaria!==me().id_usuaria)return;confirmBox("Excluir esta receita? Ela também sai dos seus planejamentos. O que você já lançou no diário continua lá.",()=>{db.t.item_planejamento=T("item_planejamento").filter(i=>i.id_receita!=d.id);db.t.ingrediente_receita=T("ingrediente_receita").filter(i=>i.id_receita!=d.id);db.t.receita_favorita=T("receita_favorita").filter(f=>f.id_receita!=d.id);db.t.receita=T("receita").filter(x=>x.id_receita!=d.id);nav.pop();toast("Receita excluída")})},
+ // admin: receitas
+ arAdd:()=>recipeForm(null),arEdit:(d)=>recipeForm(T("receita").find(r=>r.id_receita==d.id)),
+ arDel:(d)=>{if(T("item_planejamento").some(i=>i.id_receita==d.id)){toast("Receita usada em planejamentos e não pode ser excluída");return}
+   confirmBox("Excluir esta receita?",()=>{db.t.ingrediente_receita=T("ingrediente_receita").filter(i=>i.id_receita!=d.id);db.t.receita_favorita=T("receita_favorita").filter(f=>f.id_receita!=d.id);db.t.receita=T("receita").filter(r=>r.id_receita!=d.id)})},
+ // admin: conteúdos
+ acAdd:()=>contForm(null),acEdit:(d)=>contForm(T("conteudo_educativo").find(c=>c.id_conteudo==d.id)),
+ acDel:(d)=>confirmBox("Excluir este conteúdo?",()=>{db.t.leitura_conteudo=T("leitura_conteudo").filter(l=>l.id_conteudo!=d.id);db.t.conteudo_educativo=T("conteudo_educativo").filter(c=>c.id_conteudo!=d.id)})
+};
+function launchDiary(i){
+  if(i.diario_itens)return true;
+  const p=T("planejamento_refeicao").find(x=>x.id_planejamento==i.id_planejamento);const r=T("receita").find(x=>x.id_receita==i.id_receita);
+  const ing=T("ingrediente_receita").filter(x=>x.id_receita==i.id_receita&&(x.unidade==="g"||x.unidade==="ml"));
+  if(!p||!r||!ing.length)return false;
+  const reg=ensureReg(p.id_usuaria,i.tipo_refeicao,i.data_prevista);const added=[];
+  ing.forEach(x=>{const q=Math.round(x.quantidade/r.porcoes*10)/10;const ex=T("item_registro_alimentar").find(y=>y.id_registro==reg.id_registro&&y.id_alimento==x.id_alimento);
+    if(ex)ex.quantidade_g=Math.round((ex.quantidade_g+q)*10)/10;else T("item_registro_alimentar").push({id_registro:reg.id_registro,id_alimento:x.id_alimento,quantidade_g:q});added.push({id_alimento:x.id_alimento,q})});
+  const tag="Planejado: "+r.titulo;reg.observacao=reg.observacao?reg.observacao+" · "+tag:tag;
+  i.id_registro_diario=reg.id_registro;i.diario_itens=added;i.diario_tag=tag;return true}
+function unlaunchDiary(i){
+  const reg=T("registro_alimentar").find(x=>x.id_registro==i.id_registro_diario);
+  if(reg&&i.diario_itens){i.diario_itens.forEach(a=>{const ex=T("item_registro_alimentar").find(y=>y.id_registro==reg.id_registro&&y.id_alimento==a.id_alimento);
+      if(ex){ex.quantidade_g=Math.round((ex.quantidade_g-a.q)*10)/10;if(ex.quantidade_g<=0.05)db.t.item_registro_alimentar=T("item_registro_alimentar").filter(y=>y!==ex)}});
+    if(i.diario_tag&&reg.observacao)reg.observacao=reg.observacao.split(" · ").filter(t=>t!==i.diario_tag).join(" · ");
+    if(!itemsOf(reg.id_registro).length&&!reg.observacao&&!reg.horario)db.t.registro_alimentar=T("registro_alimentar").filter(y=>y!==reg)}
+  i.id_registro_diario=null;i.diario_itens=null;i.diario_tag=null}
+function addRecipeToDiary(uid,rid,date,tipo,por){
+  const r=T("receita").find(x=>x.id_receita==rid);const ing=T("ingrediente_receita").filter(x=>x.id_receita==rid);
+  const ok=ing.filter(x=>x.unidade==="g"||x.unidade==="ml");
+  if(!r||!ok.length)return {err:"Esta receita não tem ingredientes em g ou ml para lançar no diário."};
+  const reg=ensureReg(uid,tipo,date);
+  ok.forEach(x=>{const q=Math.round(x.quantidade/r.porcoes*por*10)/10;const ex=T("item_registro_alimentar").find(y=>y.id_registro==reg.id_registro&&y.id_alimento==x.id_alimento);
+    if(ex)ex.quantidade_g=Math.round((ex.quantidade_g+q)*10)/10;else T("item_registro_alimentar").push({id_registro:reg.id_registro,id_alimento:x.id_alimento,quantidade_g:q})});
+  return {skipped:ing.length-ok.length}}
+function addPlanItem(pid,rid,date,tipo){const p=T("planejamento_refeicao").find(x=>x.id_planejamento==pid);
+  if(date<p.data_inicio||date>p.data_fim)return `A data deve estar entre ${br(p.data_inicio)} e ${br(p.data_fim)}.`;
+  T("item_planejamento").push({id_item:nextId("item_planejamento"),id_planejamento:pid,id_receita:rid,data_prevista:date,tipo_refeicao:tipo,realizada:false});toast("Receita incluída no planejamento")}
+function habitForm(h){openForm({title:h?"Editar hábito":"Novo hábito",fields:[{n:"nome",l:"Nome",req:1,ph:"Ex.: Beber água"},{n:"desc",l:"Descrição"},{n:"meta",l:"Meta diária",t:"number",min:0,step:"any",s:3},{n:"un",l:"Unidade",ph:"litros, minutos...",s:3}],values:h?{nome:h.nome,desc:h.descricao,meta:h.meta_diaria??"",un:h.unidade_meta}:{},onSubmit:v=>{
+  const uid=me().id_usuaria;if(T("habito").some(x=>x.id_usuaria==uid&&x.nome.toLowerCase()===v.nome.toLowerCase()&&x!==h))return "Você já tem um hábito com esse nome.";
+  if(v.meta!==null&&v.meta<=0)return "A meta deve ser maior que zero.";
+  if(h){h.nome=v.nome;h.descricao=v.desc;h.meta_diaria=v.meta;h.unidade_meta=v.un}else T("habito").push({id_habito:nextId("habito"),id_usuaria:uid,nome:v.nome,descricao:v.desc,meta_diaria:v.meta,unidade_meta:v.un,ativo:true,data_criacao:today()})}})}
+function remForm(l){const hs=T("habito").filter(h=>h.id_usuaria==me().id_usuaria);openForm({title:l?"Editar lembrete":"Novo lembrete",fields:[{n:"t",l:"Título",req:1},{n:"m",l:"Mensagem"},{n:"h",l:"Horário",t:"time",req:1},{n:"d",l:"Dias da semana",t:"days"},{n:"hb",l:"Hábito associado (opcional)",t:"select",opts:hs.map(h=>[h.id_habito,h.nome]),blank:"Nenhum"}],values:l?{t:l.titulo,m:l.mensagem,h:l.horario,d:l.dias_semana,hb:l.id_habito||""}:{h:"09:00",d:"0111110"},onSubmit:v=>{
+  if(!v.d.includes("1"))return "Escolha pelo menos um dia da semana.";
+  if(l){Object.assign(l,{titulo:v.t,mensagem:v.m,horario:v.h,dias_semana:v.d,id_habito:v.hb?+v.hb:null})}else T("lembrete").push({id_lembrete:nextId("lembrete"),id_usuaria:me().id_usuaria,id_habito:v.hb?+v.hb:null,titulo:v.t,mensagem:v.m,horario:v.h,dias_semana:v.d,ativo:true})}})}
+function cycleSave(c,v){const uid=me().id_usuaria;
+  if(v.i>today())return "O início do ciclo não pode ser uma data futura.";
+  if(v.f&&v.f<v.i)return "O término não pode ser anterior ao início.";if(v.f&&diffDays(v.i,v.f)+1>15)return "A menstruação não costuma passar de 15 dias. Confira as datas.";
+  const others=T("ciclo_menstrual").filter(x=>x.id_usuaria==uid&&x!==c);
+  const nx=others.filter(x=>x.data_inicio>v.i).sort((a,b)=>a.data_inicio.localeCompare(b.data_inicio))[0];
+  if(v.f&&nx&&v.f>=nx.data_inicio)return `O término deve ser antes do início do ciclo seguinte (${br(nx.data_inicio)}).`;
+  const pv=others.filter(x=>x.data_inicio<v.i).sort((a,b)=>b.data_inicio.localeCompare(a.data_inicio))[0];
+  if(pv&&pv.data_fim_menstruacao&&pv.data_fim_menstruacao>=v.i)return `O ciclo anterior terminou em ${br(pv.data_fim_menstruacao)}, depois deste início. Confira as datas.`;
+  if(T("ciclo_menstrual").some(x=>x.id_usuaria==uid&&x.data_inicio===v.i&&x!==c))return "Já existe um ciclo com esse início.";
+  if(c){c.data_inicio=v.i;c.data_fim_menstruacao=v.f||null}else T("ciclo_menstrual").push({id_ciclo:nextId("ciclo_menstrual"),id_usuaria:uid,data_inicio:v.i,data_fim_menstruacao:v.f||null,duracao_ciclo_dias:null});
+  recalcCycles(uid)}
+function foodForm(a){openForm({title:a?"Editar alimento":"Novo alimento",fields:[{n:"nome",l:"Nome",req:1},{n:"cat",l:"Categoria",req:1,ph:"Ex.: Frutas"},{n:"k",l:"Calorias (100 g)",t:"number",min:0,step:"any",req:1,s:3},{n:"p",l:"Proteínas (g)",t:"number",min:0,step:"any",req:1,s:3},{n:"c",l:"Carboidratos (g)",t:"number",min:0,step:"any",req:1,s:3},{n:"g",l:"Gorduras (g)",t:"number",min:0,step:"any",req:1,s:3}],values:a?{nome:a.nome,cat:a.categoria,k:a.calorias_100g,p:a.proteinas_100g,c:a.carboidratos_100g,g:a.gorduras_100g}:{},onSubmit:v=>{
+  if([v.k,v.p,v.c,v.g].some(x=>x<0))return "Os valores nutricionais não podem ser negativos.";
+  if(T("alimento").some(x=>x.nome.toLowerCase()===v.nome.toLowerCase()&&x!==a))return "Já existe um alimento com esse nome.";
+  const o={nome:v.nome,categoria:v.cat,calorias_100g:v.k,proteinas_100g:v.p,carboidratos_100g:v.c,gorduras_100g:v.g};
+  if(a){Object.assign(a,o);T("receita").forEach(r=>{r.calorias_porcao=recCalc(r.id_receita)})}else T("alimento").push({id_alimento:nextId("alimento"),...o})}})}
+function recipeForm(r){
+  const al=T("alimento").slice().sort((a,b)=>a.nome.localeCompare(b.nome)).map(a=>[a.id_alimento,a.nome]);
+  const ing=r?T("ingrediente_receita").filter(i=>i.id_receita==r.id_receita):[];const vals=r?{titulo:r.titulo,desc:r.descricao,modo:r.modo_preparo,tempo:r.tempo_preparo_min,por:r.porcoes,cat:r.categoria,fase:r.fase_ciclo_indicada||""}:{por:1,cat:"prato_principal"};
+  const fields=[{n:"titulo",l:"Título",req:1},{n:"desc",l:"Descrição"},{n:"modo",l:"Modo de preparo",t:"textarea",req:1},{n:"tempo",l:"Tempo (min)",t:"number",min:1,req:1,s:2},{n:"por",l:"Porções",t:"number",min:1,req:1,s:2},{n:"cat",l:"Categoria",t:"select",opts:opts(RCAT),req:1,s:2},{n:"fase",l:"Fase do ciclo indicada",t:"select",opts:opts(FASE),blank:"Nenhuma"}].filter(f=>!["modo","tempo","por","cat"].includes(f.n));
+  for(let k=0;k<8;k++){const i=ing[k];vals["a"+k]=i?i.id_alimento:"";vals["q"+k]=i?i.quantidade:"";vals["u"+k]=i?i.unidade:"g";
+    fields.push({n:"a"+k,l:`Ingrediente ${k+1}`,t:"select",opts:al,blank:"—",s:4},{n:"q"+k,l:"Qtd.",t:"number",min:0,step:"any",s:1},{n:"u"+k,l:"Un.",t:"select",opts:opts(UNID),s:1})}
+  openForm({title:r?"Editar receita":"Nova receita",fields,values:vals,note:"Informe o nome e os ingredientes. As calorias são somadas automaticamente pelos ingredientes em g ou ml.",onSubmit:v=>{
+    const list=[];const seen=new Set();for(let k=0;k<8;k++){if(v["a"+k]){if(!(v["q"+k]>0))return `Informe a quantidade do ingrediente ${k+1}.`;if(seen.has(v["a"+k]))return "Há ingredientes repetidos.";seen.add(v["a"+k]);list.push({id_alimento:+v["a"+k],quantidade:v["q"+k],unidade:v["u"+k]})}}
+    if(!list.length)return "Inclua pelo menos um ingrediente.";
+    let rec=r;const o={titulo:v.titulo,descricao:v.desc,fase_ciclo_indicada:v.fase||null};
+    if(rec)Object.assign(rec,o);else{rec={id_receita:nextId("receita"),id_usuaria:isAdmin()?null:me().id_usuaria,calorias_porcao:null,modo_preparo:"",tempo_preparo_min:null,porcoes:1,categoria:null,...o};T("receita").push(rec)}
+    db.t.ingrediente_receita=T("ingrediente_receita").filter(i=>i.id_receita!=rec.id_receita).concat(list.map(i=>({id_receita:rec.id_receita,...i})));
+    rec.calorias_porcao=recCalc(rec.id_receita)}})}
+function contForm(c){openForm({title:c?"Editar conteúdo":"Novo conteúdo",fields:[{n:"titulo",l:"Título",req:1},{n:"resumo",l:"Resumo"},{n:"corpo",l:"Texto",t:"textarea",req:1},{n:"cat",l:"Categoria",t:"select",opts:opts(CCAT),req:1,s:3},{n:"fase",l:"Fase do ciclo",t:"select",opts:opts(FASE),blank:"Nenhuma",s:3},{n:"fonte",l:"Fonte"},{n:"pub",l:"Publicado (visível para as usuárias)",t:"checkbox"}],values:c?{titulo:c.titulo,resumo:c.resumo,corpo:c.corpo,cat:c.categoria,fase:c.fase_ciclo||"",fonte:c.fonte,pub:c.publicado}:{cat:"alimentacao",pub:true},onSubmit:v=>{
+  const o={titulo:v.titulo,resumo:v.resumo,corpo:v.corpo,categoria:v.cat,fase_ciclo:v.fase||null,fonte:v.fonte,publicado:v.pub};
+  if(c)Object.assign(c,o);else T("conteudo_educativo").push({id_conteudo:nextId("conteudo_educativo"),data_publicacao:today(),...o})}})}
+
+document.addEventListener("click",e=>{
+  const sb=e.target.closest&&e.target.closest("button[type=submit]");
+  if(sb&&sb.form){e.preventDefault();handleForm(sb.form);return}
+  if(e.target.classList?.contains("modal")){closeModal();return}
+  const el=e.target.closest("[data-act]");if(!el)return;const f=A[el.dataset.act];if(f){f(el.dataset,el);if(!["go","tab","back","closeModal","fillDemo","authTab"].includes(el.dataset.act)&&!ui.modal)persist()}
+});
+document.addEventListener("input",e=>{
+  const on=e.target.dataset?.on;
+  if(on==="q"){ui.q=e.target.value;const r=$("#results");if(r)r.innerHTML=cur().name==="alimentos"?foodsResults():cur().name==="receitas"?recipesResults():contentsResults()}
+});
+document.addEventListener("change",e=>{if(e.target.dataset?.on==="date"&&e.target.value){ui.date=e.target.value;render()}});
+
+(async function init(){
+  db=loadDB();
+  if(!db||!db.t||!db.t.usuaria)await seed();
+  db.admin.senha_fb=fbHash("admin123");const dm=T("usuaria").find(x=>x.email==="demo@femmetrack.com");if(dm)dm.senha_fb=fbHash("123456");persist();
+  T("item_planejamento").forEach(i=>{if(i.id_registro_diario&&!i.diario_itens){const rg=T("registro_alimentar").find(x=>x.id_registro==i.id_registro_diario);if(rg){i.diario_itens=itemsOf(rg.id_registro).map(x=>({id_alimento:x.id_alimento,q:x.quantidade_g}));i.diario_tag=rg.observacao||""}else i.id_registro_diario=null}});
+  const grp={};T("registro_alimentar").forEach(r=>{const k=r.id_usuaria+"|"+r.data_refeicao+"|"+r.tipo_refeicao;(grp[k]=grp[k]||[]).push(r)});
+  Object.values(grp).forEach(g=>{if(g.length<2)return;const keep=g[0];g.slice(1).forEach(r=>{itemsOf(r.id_registro).forEach(it=>{const ex=T("item_registro_alimentar").find(y=>y.id_registro==keep.id_registro&&y.id_alimento==it.id_alimento);if(ex)ex.quantidade_g+=it.quantidade_g;else T("item_registro_alimentar").push({id_registro:keep.id_registro,id_alimento:it.id_alimento,quantidade_g:it.quantidade_g})});
+    db.t.item_registro_alimentar=T("item_registro_alimentar").filter(y=>y.id_registro!==r.id_registro);if(r.observacao)keep.observacao=keep.observacao?keep.observacao+" · "+r.observacao:r.observacao;
+    db.t.registro_alimentar=T("registro_alimentar").filter(y=>y!==r);T("item_planejamento").forEach(ip=>{if(ip.id_registro_diario===r.id_registro)ip.id_registro_diario=keep.id_registro})})});
+  let mig=false;T("item_planejamento").forEach(i=>{if(i.realizada&&!i.diario_itens&&launchDiary(i))mig=true});persist();
+  if(db.session&&!db.session.admin&&!me())db.session=null;
+  if(db.session&&db.session.admin)nav=[{name:"a_alimentos",p:{}}];
+  render();
+})();
+</script>
